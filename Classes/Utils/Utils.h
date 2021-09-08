@@ -22,8 +22,18 @@
 #define IPAD (LinphoneManager.runningOnIpad)
 #define ANIMATED ([LinphoneManager.instance lpConfigBoolForKey:@"animations_preference"])
 #define LC ([LinphoneManager getLc])
+#define BASE_URL [NSURL URLWithString:@"https://webhook.relevantads.com/api/SplashCallOTP/"]
+//https://webhook.relevantads.com/api/SplashCallOTP/DeviceLogin?deviceUID=7530965063&phoneNumber=7530965063
+
 
 @interface LinphoneUtils : NSObject
+
+extern NSNumber *balance;
+extern NSString *userName;
+extern NSString *userPassword;
+extern NSArray *jirtuArr;
+extern BOOL selectedCountry;
+
 
 + (BOOL)findAndResignFirstResponder:(UIView*)view;
 + (void)adjustFontSize:(UIView*)view mult:(float)mult;
@@ -48,6 +58,7 @@ typedef enum {
 + (UIImage *)selfAvatar;
 
 + (NSString *)durationToString:(int)duration;
++(void)getBalance:(NSString*)strToken;
 + (NSString *)intervalToString:(NSTimeInterval)interval ;
 
 + (NSMutableDictionary <NSString *, PHAsset *> *)photoAssetsDictionary;
@@ -92,7 +103,9 @@ typedef enum {
 #import <UIKit/UIColor.h>
 #import <UIKit/UIKit.h>
 
-#define LINPHONE_MAIN_COLOR [UIColor colorWithRed:207.0f / 255.0f green:76.0f / 255.0f blue:41.0f / 255.0f alpha:1.0f]
+//#define LINPHONE_MAIN_COLOR [UIColor colorWithRed:207.0f / 255.0f green:76.0f / 255.0f blue:41.0f / 255.0f alpha:1.0f]
+#define LINPHONE_MAIN_COLOR [UIColor colorWithRed:79.0f / 255.0f green:139.0f / 255.0f blue:71.0f / 255.0f alpha:1.0f]
+
 #define LINPHONE_SETTINGS_BG_IOS7 [UIColor colorWithRed:164 / 255. green:175 / 255. blue:183 / 255. alpha:1.0]
 
 @interface UIColor (LightAndDark)

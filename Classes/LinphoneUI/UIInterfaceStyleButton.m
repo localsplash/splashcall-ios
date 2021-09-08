@@ -34,13 +34,14 @@
 				break;
 			case UIUserInterfaceStyleUnspecified:
 			case UIUserInterfaceStyleLight:
-				self.tintColor = [UIColor darkGrayColor];
+				self.tintColor = [UIColor whiteColor];
 				break;
 			default:
 				break;
 		}
 	} else {
-		self.tintColor = [UIColor darkGrayColor];
+		//self.tintColor = [UIColor darkGrayColor];
+        self.tintColor = [UIColor whiteColor];
 	}
 }
 

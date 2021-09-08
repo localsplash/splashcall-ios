@@ -55,9 +55,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 + (UICompositeViewDescription *)compositeViewDescription {
 	if (compositeDescription == nil) {
 		compositeDescription = [[UICompositeViewDescription alloc] init:self.class
-															  statusBar:StatusBarView.class
+															  statusBar:nil
 																 tabBar:nil
-															   sideMenu:SideMenuView.class
+															   sideMenu:nil
 															 fullscreen:false
 														 isLeftFragment:YES
 														   fragmentWith:nil];

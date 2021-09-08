@@ -21,7 +21,7 @@
 #import "UICompositeView.h"
 #import "TPKeyboardAvoidingScrollView.h"
 #import "PhoneMainView.h"
-
+#import "Utils/Utils.h"
 @interface AssistantView : UIViewController <UITextFieldDelegate, UICompositeViewDelegate> {
 
   @private
@@ -33,6 +33,11 @@
 	size_t number_of_configs_before;
 	BOOL mustRestoreView;
 	long phone_number_length;
+    NSArray*countryName;
+    NSString*strCode;
+    NSString*strPhone;
+    NSString*strToken;
+    NSString*otp;
 }
 
 @property(nonatomic) UICompositeViewDescription *outgoingView;
@@ -69,6 +74,23 @@
 @property (weak, nonatomic) IBOutlet UIButton *qrCodeButton;
 @property (weak, nonatomic) IBOutlet UIButton *downloadButton;
 @property (weak, nonatomic) IBOutlet UITextField *urlLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *countryImg;
+@property (weak, nonatomic) IBOutlet UITextField *txtFldUserName;
+@property (weak, nonatomic) IBOutlet UITextField *txtFldPassword;
+@property (weak, nonatomic) IBOutlet UITextField *txtFldOTP;
+
+@property (weak, nonatomic) IBOutlet UIButton *btnLogin;
+@property (weak, nonatomic) IBOutlet UIButton *btnRegister;
+@property (weak, nonatomic) IBOutlet UIView *border;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (weak, nonatomic) IBOutlet UIButton *btnLogin1;
+@property (weak, nonatomic) IBOutlet UIButton *btnRegister1;
+@property (weak, nonatomic) IBOutlet UIView *border1;
+@property (weak, nonatomic) IBOutlet UIView *borderVerify;
+@property (weak, nonatomic) IBOutlet UIButton *btnVerify;
+@property (weak, nonatomic) IBOutlet UIButton *btnResend;
+
+
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *createAccountNextButtonPositionConstraint;
 
 + (NSString *)StringForXMLRPCError:(const char *)err;
@@ -105,4 +127,21 @@
 - (IBAction)onCountryCodeFieldChange:(id)sender;
 - (IBAction)onCountryCodeFieldEnd:(id)sender;
 - (IBAction)onPhoneNumberDisclosureClick:(id)sender;
+
+
+@property(nonatomic, strong) IBOutlet UIView *vwCountry;
+@property(nonatomic, strong) IBOutlet UIView *VWMobile;
+
+@property  NSUInteger pageIndex;
+@property  NSString *imgFile;
+@property  NSString *txtTitle;
+@property (weak, nonatomic) IBOutlet UIPageControl *pgCntrl;
+@property (weak, nonatomic) IBOutlet UIImageView *ivScreenImage;
+@property (weak, nonatomic) IBOutlet UILabel *lblScreenLabel;
+@property (weak, nonatomic) IBOutlet UITextView *txtVWDescription;
+@property (weak, nonatomic) IBOutlet UIButton *btnNxt;
+
+//- (IBAction)btnNext:(id)sender;
++ (void) borderWithCornerRadius:(UITextField*)textField;
+
 @end

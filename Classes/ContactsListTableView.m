@@ -362,7 +362,7 @@ static int ms_strcmpfuz(const char *fuzzy_word, const char *sentence) {
 	[cell setContact:contact];
 	[super accessoryForCell:cell atPath:indexPath];
 	cell.contentView.userInteractionEnabled = false;
-
+    cell.avatarImage.hidden = YES;
 	return cell;
 }
 

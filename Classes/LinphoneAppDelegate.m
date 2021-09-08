@@ -27,7 +27,7 @@
 #import "CoreTelephony/CTCall.h"
 
 #import "LinphoneCoreSettingsStore.h"
-
+#import "defines.h"
 #include "LinphoneManager.h"
 #include "linphone/linphonecore.h"
 
@@ -511,12 +511,18 @@
 	LOGI(@"[APNs] %@ : %@", NSStringFromSelector(_cmd), deviceToken);
 	dispatch_async(dispatch_get_main_queue(), ^{
 		[LinphoneManager.instance setRemoteNotificationToken:deviceToken];
+        [[NSUserDefaults standardUserDefaults] setObject:deviceToken forKey:ktoken];
+       
+        
 	});
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
 	LOGI(@"[APNs] %@ : %@", NSStringFromSelector(_cmd), [error localizedDescription]);
 	[LinphoneManager.instance setRemoteNotificationToken:nil];
+    [[NSUserDefaults standardUserDefaults] setObject:@"nothing" forKey:ktoken];
+
+    
 }
 
 #pragma mark - PushKit Functions

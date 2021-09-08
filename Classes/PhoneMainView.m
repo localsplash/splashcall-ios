@@ -472,8 +472,9 @@ static RootViewManager *rootViewManagerInstance = nil;
 }
 - (void)startUp {
 	@try {
-		LinphoneManager *lm = LinphoneManager.instance;
-                LOGI(@"%s", linphone_global_state_to_string(
+		
+        LinphoneManager *lm = LinphoneManager.instance;
+             /*   LOGI(@"%s", linphone_global_state_to_string(
                                 linphone_core_get_global_state(LC)));
                 if (linphone_core_get_global_state(LC) != LinphoneGlobalOn) {
                   [self changeCurrentView:DialerView.compositeViewDescription];
@@ -500,7 +501,24 @@ static RootViewManager *rootViewManagerInstance = nil;
                         changeCurrentView:view.compositeViewDescription];
                     [view reset];
                   }
-                }
+                }*/
+        //Kdialer
+        
+       
+        if  ([[NSUserDefaults standardUserDefaults]boolForKey:@"Kdialer"])
+        {
+            [self changeCurrentView:DialerView.compositeViewDescription];
+        }else{
+            
+            AssistantView *view = VIEW(AssistantView);
+           [PhoneMainView.instance
+          changeCurrentView:view.compositeViewDescription];
+         [view reset];
+        }
+        
+             
+        
+        
                 [self updateApplicationBadgeNumber]; // Update Badge at startup
         } @catch (NSException *exception) {
           // we'll wait until the app transitions correctly

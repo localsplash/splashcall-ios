@@ -27,6 +27,9 @@
 
 @interface DialerView
 	: TPMultiLayoutViewController <UITextFieldDelegate, UICompositeViewDelegate, MFMailComposeViewControllerDelegate> {
+        
+        NSArray*countryName;
+        NSString *NumWithOutZero;
 }
 
 
@@ -52,6 +55,9 @@
 @property(nonatomic, strong) IBOutlet UIView *videoPreview;
 @property(nonatomic, strong) IBOutlet UICamSwitch *videoCameraSwitch;
 @property(weak, nonatomic) IBOutlet UIView *padView;
+@property(nonatomic, strong) IBOutlet UILabel *lblRate;
+@property(nonatomic, strong) IBOutlet UIImageView *imgFlag;
+
 
 - (IBAction)onAddContactClick:(id)event;
 - (IBAction)onBackClick:(id)event;

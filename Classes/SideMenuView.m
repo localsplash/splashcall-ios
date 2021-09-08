@@ -20,12 +20,13 @@
 #import "SideMenuView.h"
 #import "LinphoneManager.h"
 #import "PhoneMainView.h"
-
+#import "Utils/Utils.h"
 @implementation SideMenuView
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
-
+    
+   
 #pragma deploymate push "ignored-api-availability"
 	if (UIDevice.currentDevice.systemVersion.doubleValue >= 7) {
 		// it's better to detect only pan from screen edges
@@ -47,6 +48,21 @@
 
 	[self updateHeader];
 	[_sideMenuTableViewController.tableView reloadData];
+    
+    [LinphoneUtils  getBalance:[NSUserDefaults.standardUserDefaults objectForKey:@"KToken"]];
+    
+   
+    _balanceLabel.text = [NSString stringWithFormat:@"Account Balance: %@",
+    balance];
+    
+    if ((balance == nil) || ([balance isKindOfClass:[NSNull class]])){
+        
+        
+        _balanceLabel.text = [NSString stringWithFormat:@"Account Balance: %s",
+        "0"];
+    }
+   
+    _balanceLabel.hidden = YES;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -66,19 +82,22 @@
 	if (default_proxy != NULL) {
 		const LinphoneAddress *addr = linphone_proxy_config_get_identity_address(default_proxy);
 		[ContactDisplay setDisplayNameLabel:_nameLabel forAddress:addr];
-		_addressLabel.text = addr? [NSString stringWithUTF8String:linphone_address_as_string(addr)] : NSLocalizedString(@"No address", nil);
+        _addressLabel.text = _nameLabel.text;//addr? [NSString stringWithUTF8String:linphone_address_as_string(addr)] : NSLocalizedString(@"No address", nil);
 		_presenceImage.image = [StatusBarView imageForState:linphone_proxy_config_get_state(default_proxy)];
 	} else {
 		_nameLabel.text = linphone_core_get_proxy_config_list(LC) ? NSLocalizedString(@"No default account", nil) : NSLocalizedString(@"No account", nil);
+        _addressLabel.text = linphone_core_get_proxy_config_list(LC) ? NSLocalizedString(@"No default account", nil) : NSLocalizedString(@"No account", nil);
+
 		// display direct IP:port address so that we can be reached
 		LinphoneAddress *addr = linphone_core_get_primary_contact_parsed(LC);
 		if (addr) {
 			char *as_string = linphone_address_as_string(addr);
-			_addressLabel.text = [NSString stringWithFormat:@"%s", as_string];
+			//_addressLabel.text = [NSString stringWithFormat:@"%s", as_string];
+            
 			ms_free(as_string);
 			linphone_address_unref(addr);
 		} else {
-			_addressLabel.text = NSLocalizedString(@"No address", nil);
+			_addressLabel.text = NSLocalizedString(@"No Name", nil);
 		}
 		_presenceImage.image = nil;
 	}
@@ -92,8 +111,8 @@
 #pragma deploymate pop
 
 - (IBAction)onHeaderClick:(id)sender {
-	[PhoneMainView.instance changeCurrentView:SettingsView.compositeViewDescription];
-	[PhoneMainView.instance.mainViewController hideSideMenu:YES];
+	//[PhoneMainView.instance changeCurrentView:SettingsView.compositeViewDescription];
+	//[PhoneMainView.instance.mainViewController hideSideMenu:YES];
 }
 
 - (IBAction)onAvatarClick:(id)sender {

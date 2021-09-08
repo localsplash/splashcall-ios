@@ -75,7 +75,10 @@ NSString *const kLinphoneFileTransferRecvUpdate = @"LinphoneFileTransferRecvUpda
 NSString *const kLinphoneQRCodeFound = @"LinphoneQRCodeFound";
 NSString *const kLinphoneChatCreateViewChange = @"LinphoneChatCreateViewChange";
 
-NSString *const kLinphoneMsgNotificationAppGroupId = @"group.org.linphone.phone.msgNotification";
+//NSString *const kLinphoneMsgNotificationAppGroupId = @"group.org.linphone.phone.msgNotification";
+NSString *const kLinphoneMsgNotificationAppGroupId = @"reel.test.lulu";
+
+//
 
 const int kLinphoneAudioVbrCodecDefaultBitrate = 36; /*you can override this from linphonerc or linphonerc-factory*/
 
@@ -768,7 +771,7 @@ static void linphone_iphone_popup_password_request(LinphoneCore *lc, LinphoneAut
 		UIAlertAction* settingsAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Go to settings", nil)
 						 style:UIAlertActionStyleDefault
 						 handler:^(UIAlertAction * action) {
-				[PhoneMainView.instance changeCurrentView:SettingsView.compositeViewDescription];
+				//[PhoneMainView.instance changeCurrentView:SettingsView.compositeViewDescription];
 			}];
 
 		[alertView addAction:defaultAction];

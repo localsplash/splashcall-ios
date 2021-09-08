@@ -50,6 +50,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
+    
+    selectedCountry = false;
 
 	if ([_tableController isEditing]) {
 		[_tableController setEditing:FALSE animated:FALSE];

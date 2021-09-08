@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -85,7 +85,7 @@
                                         <accessibilityTraits key="traits" none="YES"/>
                                     </accessibility>
                                     <fontDescription key="fontDescription" type="system" pointSize="22"/>
-                                    <nil key="textColor"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" tag="6" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wzg-i0-spp" userLabel="callButton" customClass="UIInterfaceStyleButton">
@@ -181,11 +181,11 @@
                                         <accessibilityTraits key="traits" none="YES"/>
                                     </accessibility>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <nil key="textColor"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
-                            <color key="backgroundColor" systemColor="secondarySystemBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="backgroundColor" red="0.2470588235" green="0.49803921569999998" blue="0.2156862745" alpha="1" colorSpace="calibratedRGB"/>
                         </view>
                         <view tag="12" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="49" userLabel="contentView">
                             <rect key="frame" x="0.0" y="66" width="414" height="722"/>
@@ -319,7 +319,7 @@
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES"/>
                                 </imageView>
                                 <button opaque="NO" tag="4" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N2g-vL-3x8" userLabel="backButton" customClass="UIIconButton">
-                                    <rect key="frame" x="0.0" y="0.0" width="37.5" height="66"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="37" height="66"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES"/>
                                     <accessibility key="accessibilityConfiguration" label="Back"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -334,7 +334,7 @@
                                     </connections>
                                 </button>
                                 <button hidden="YES" opaque="NO" tag="11" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bqf-Gg-2Rw" userLabel="cancelButton" customClass="UIIconButton">
-                                    <rect key="frame" x="0.0" y="0.0" width="37.5" height="66"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="37" height="66"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES"/>
                                     <accessibility key="accessibilityConfiguration" label="Cancel"/>
                                     <inset key="titleEdgeInsets" minX="0.0" minY="18" maxX="0.0" maxY="0.0"/>
@@ -388,7 +388,7 @@
                                     </connections>
                                 </button>
                                 <button hidden="YES" opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" reversesTitleShadowWhenHighlighted="YES" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uVy-PC-gn9" userLabel="infoButton" customClass="UIIconButton">
-                                    <rect key="frame" x="247.5" y="0.0" width="37.5" height="66"/>
+                                    <rect key="frame" x="248" y="0.0" width="37" height="66"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES"/>
                                     <accessibility key="accessibilityConfiguration" label="Select all"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -404,7 +404,7 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" tag="6" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wag-QV-oUD" userLabel="callButton" customClass="UIIconButton">
-                                    <rect key="frame" x="247.5" y="0.0" width="37.5" height="66"/>
+                                    <rect key="frame" x="248" y="0.0" width="37" height="66"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES"/>
                                     <state key="normal" image="call_alt_start_default.png">
                                         <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -416,7 +416,7 @@
                                     </connections>
                                 </button>
                                 <button hidden="YES" opaque="NO" tag="7" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t25-en-4LP" userLabel="backToCallButton" customClass="UIBackToCallButton">
-                                    <rect key="frame" x="247.5" y="0.0" width="37.5" height="66"/>
+                                    <rect key="frame" x="248" y="0.0" width="37" height="66"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES"/>
                                     <state key="normal" image="call_back_default.png">
                                         <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -428,7 +428,7 @@
                                     </connections>
                                 </button>
                                 <button hidden="YES" opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" reversesTitleShadowWhenHighlighted="YES" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4RV-US-Kr1" userLabel="toggleSelectionButton" customClass="UIIconButton">
-                                    <rect key="frame" x="247.5" y="0.0" width="37.5" height="66"/>
+                                    <rect key="frame" x="248" y="0.0" width="37" height="66"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES"/>
                                     <accessibility key="accessibilityConfiguration" label="Select all"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -454,6 +454,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
+                            <color key="backgroundColor" red="0.2470588235" green="0.49803921569999998" blue="0.2156862745" alpha="1" colorSpace="calibratedRGB"/>
                         </view>
                         <view tag="12" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OTt-fc-941" userLabel="contentView">
                             <rect key="frame" x="0.0" y="66" width="324" height="788"/>
@@ -513,7 +514,7 @@
                                             </connections>
                                         </button>
                                         <view tag="20" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="C02-2r-vXK" userLabel="messageField" customClass="HPGrowingTextView">
-                                            <rect key="frame" x="32.5" y="13" width="257" height="40"/>
+                                            <rect key="frame" x="32" y="13" width="257" height="40"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <accessibility key="accessibilityConfiguration" label="Message field"/>
@@ -568,8 +569,8 @@
         </tapGestureRecognizer>
     </objects>
     <resources>
-        <image name="back_default.png" width="38.400001525878906" height="35.200000762939453"/>
-        <image name="back_disabled.png" width="38.400001525878906" height="35.200000762939453"/>
+        <image name="back_default.png" width="24" height="21"/>
+        <image name="back_disabled.png" width="24" height="21"/>
         <image name="call_alt_start_default.png" width="47.200000762939453" height="47.200000762939453"/>
         <image name="call_alt_start_disabled.png" width="47.200000762939453" height="47.200000762939453"/>
         <image name="call_back_default.png" width="61.599998474121094" height="44"/>

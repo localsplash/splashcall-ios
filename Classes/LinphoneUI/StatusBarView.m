@@ -409,7 +409,7 @@
 	if (linphone_core_get_default_proxy_config(LC)) {
 		linphone_core_refresh_registers(LC);
 	} else if (linphone_core_get_proxy_config_list(LC)) {
-		[PhoneMainView.instance changeCurrentView:SettingsView.compositeViewDescription];
+		//[PhoneMainView.instance changeCurrentView:SettingsView.compositeViewDescription];
 	} else {
 		[PhoneMainView.instance changeCurrentView:AssistantView.compositeViewDescription];
 	}

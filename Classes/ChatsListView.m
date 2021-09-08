@@ -27,6 +27,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
+    selectedCountry = false;
 	[NSNotificationCenter.defaultCenter addObserver:self
 										   selector:@selector(textReceivedEvent:)
 											   name:kLinphoneMessageReceived

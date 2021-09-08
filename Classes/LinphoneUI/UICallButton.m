@@ -19,8 +19,8 @@
 
 #import "UICallButton.h"
 #import "LinphoneManager.h"
-
 #import <CoreTelephony/CTCallCenter.h>
+#import "PhoneMainView.h"
 
 @implementation UICallButton
 
@@ -85,12 +85,66 @@
 		}
 	}
 
-	if ([address length] > 0) {
-		LinphoneAddress *addr = [LinphoneUtils normalizeSipOrPhoneAddress:address];
-		[LinphoneManager.instance call:addr];
-		if (addr)
-			linphone_address_unref(addr);
-	}
+    balance = 0;
+    if ([address length] > 0) {
+        
+    
+        
+        if ([jirtuArr containsObject:address]){
+            
+            //if address
+            LinphoneAddress *addr = [LinphoneUtils normalizeSipOrPhoneAddress:address];
+            [LinphoneManager.instance call:addr];
+            if (addr)
+                linphone_address_unref(addr);
+        }else{
+            
+            
+            //if address
+            LinphoneAddress *addr = [LinphoneUtils normalizeSipOrPhoneAddress:address];
+            [LinphoneManager.instance call:addr];
+            if (addr)
+                linphone_address_unref(addr);
+            /*
+            if (balance <= 0){
+                
+                
+                UIAlertController *errView =
+                [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Low balance", nil)
+                                                    message:NSLocalizedString(@"Please Recharge , "
+                                                                              @"You have no balance",
+                                                                              nil)
+                                             preferredStyle:UIAlertControllerStyleAlert];
+                
+                UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
+                                                                        style:UIAlertActionStyleDefault
+                                                                      handler:^(UIAlertAction *action){
+                }];
+                
+                [errView addAction:defaultAction];
+                [PhoneMainView.instance presentViewController:errView animated:YES completion:nil];
+                
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    
+                    [errView dismissViewControllerAnimated:YES completion:^{
+                        
+                        //Dismissed
+                    }];
+                    
+                });
+                
+            }
+            else{
+                
+                //if address
+                LinphoneAddress *addr = [LinphoneUtils normalizeSipOrPhoneAddress:address];
+                [LinphoneManager.instance call:addr];
+                if (addr)
+                    linphone_address_unref(addr);
+            }*/
+        }
+        
+    }
 }
 
 - (void)updateIcon {

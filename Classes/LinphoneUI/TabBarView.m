@@ -166,7 +166,7 @@
 }
 
 - (IBAction)onChatClick:(id)event {
-	[PhoneMainView.instance changeCurrentView:ChatsListView.compositeViewDescription];
+	//[PhoneMainView.instance changeCurrentView:ChatsListView.compositeViewDescription];
 }
 
 @end

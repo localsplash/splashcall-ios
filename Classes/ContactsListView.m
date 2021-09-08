@@ -117,9 +117,31 @@ static UICompositeViewDescription *compositeDescription = nil;
 	
 	[tap setDelegate:self];
 	[self.view addGestureRecognizer:tap];
+    
+    connector = [[WebServiceConnector alloc] init];
+    [connector setDelegate:self];
+    
+    
+    /*
+    dispatch_async(dispatch_get_main_queue(), ^{
+   
+        
+         [self loadContacts];
+    });*/
+    
+    
+   
+//    [UtilsNew startActivityIndicatorInView:self.view withMessage:@"Processing..."];
+//    NSDictionary *dict =[[NSDictionary alloc]initWithObjectsAndKeys:userNumber,kSignUpNumber,loginPassword,KpassWord, nil];
+//    [[NSUserDefaults standardUserDefaults]synchronize];
+//     webService = KNewLoginService;
+//    [connector executeSelect:KNewLoginService andAction:@"action" andDictionary:dict];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    
+    selectedCountry = false;
 	[super viewWillAppear:animated];
 	[ContactSelection setNameOrEmailFilter:@""];
 	_searchBar.showsCancelButton = (_searchBar.text.length > 0);
@@ -144,6 +166,228 @@ static UICompositeViewDescription *compositeDescription = nil;
 		self.selectedButtonImage.hidden = TRUE;
 	}
 }
+
+
+#pragma New contacts Methods
+
+-(void)loadContacts
+{
+    NSArray*allContactss =[[NSArray alloc]initWithArray:[self getAllContacts]];
+  //  NSArray *NumberForSend = [allContactss valueForKey:@"KNumberForSend"];
+    // NSArray *FullNameForSend = [allContactss valueForKey:@"KFullName"];
+    //NSString* allNumbersString = [self getAllNumbersInStringFromArray:allContactss];
+    NSError*error;
+   // NSArray *contacts =[[NSArray alloc]initWithArray:NumberForSend];
+   // NSArray *name =[[NSArray alloc]initWithArray:FullNameForSend];
+   /* NSData *sendNew =[NSJSONSerialization dataWithJSONObject:contacts options:kNilOptions error:&error];
+    NSString *jsonString = [[NSString alloc] initWithData:sendNew encoding:NSUTF8StringEncoding];
+   // NSData *sendName =[NSJSONSerialization dataWithJSONObject:name options:kNilOptions error:&error];
+    //NSString *jsonNameStr = [[NSString alloc] initWithData:sendName encoding:NSUTF8StringEncoding];
+     NSLog(@"Display String %@",jsonString);
+    NSString *post = [NSString stringWithFormat:@"contacts=%@",jsonString];
+   // NSString *post = [NSString stringWithFormat:@"name=%@",jsonNameStr];
+    NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[post length]];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init] ;
+  //  [request setURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://208.43.85.86/esstel/getContactGrv.php"]]];
+    [request setURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://208.43.85.86/esstel/getContactGrv_ios.php"]]];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Current-Type"];
+    [request setHTTPBody:postData];
+    
+    
+    
+    
+    NSURLConnection *conn = [[NSURLConnection alloc]initWithRequest:request delegate:self];
+    if(conn)
+    {
+        
+    }
+    else
+    {
+        
+    }*/
+    
+        NSString *urlString = [NSString stringWithFormat:@"%@checkContacts",
+                               BASE_URL];
+        NSDictionary *jsonBodyDict = @{@"contacts":allContactss};
+    
+    
+        NSLog(@"%@", jsonBodyDict);
+        
+        NSData *jsonBodyData = [NSJSONSerialization dataWithJSONObject:jsonBodyDict options:kNilOptions error:nil];
+        
+        NSMutableURLRequest *request = [NSMutableURLRequest new];
+        request.HTTPMethod = @"POST";
+        
+        NSString*strToken  = [NSUserDefaults.standardUserDefaults objectForKey:@"KToken"];
+        [request setURL:[NSURL URLWithString:urlString]];
+        [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+        [request addValue:[NSString stringWithFormat:@"Bearer %@",strToken] forHTTPHeaderField:@"Authorization"];
+
+        [request setHTTPBody:jsonBodyData];
+        
+        NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+        NSURLSession *session = [NSURLSession sessionWithConfiguration:config
+                                                              delegate:nil
+                                                         delegateQueue:[NSOperationQueue mainQueue]];
+        NSURLSessionDataTask *task = [session dataTaskWithRequest:request
+                                                completionHandler:^(NSData * _Nullable data,
+                                                                    NSURLResponse * _Nullable response,
+                                                                    NSError * _Nullable error) {
+           
+            
+            NSHTTPURLResponse *asHTTPResponse = (NSHTTPURLResponse *) response;
+           
+            NSDictionary *forJSONObject = [NSJSONSerialization JSONObjectWithData:data
+                                                                                       options:kNilOptions
+                                                                                         error:nil];
+            
+            if (asHTTPResponse.statusCode == 200){
+                
+                
+                jirtuArr = [forJSONObject objectForKey:@"contacts"];
+                
+                
+            }else{
+                
+                NSString *errorMsg = [forJSONObject objectForKey:@"status"];
+                UIAlertController *errView = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Jirttu", nil)
+                                                                                 message:NSLocalizedString(errorMsg, nil)
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+                
+                UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK"
+                                                                        style:UIAlertActionStyleDefault
+                                                                      handler:^(UIAlertAction * action) {}];
+                
+                [errView addAction:defaultAction];
+                [self presentViewController:errView animated:YES completion:nil];
+                
+            }
+            
+            
+            
+        }];
+        [task resume];
+    }
+    
+    
+
+
+-(NSArray*)getAllContacts
+{
+    CFErrorRef *error = nil;
+    ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, error);
+    // ABAddressBookRef addressBook = NULL;
+    NSMutableArray*allName=[[NSMutableArray alloc]init];
+    NSArray *allPeople = CFBridgingRelease(ABAddressBookCopyArrayOfAllPeople(addressBook));
+    NSInteger numberOfPeople = [allPeople count];
+    for (NSInteger i = 0; i < numberOfPeople; i++)
+    {
+        ABRecordRef person = (__bridge ABRecordRef)allPeople[i];
+        NSString *firstName = CFBridgingRelease(ABRecordCopyValue(person, kABPersonFirstNameProperty));
+        NSString *lastName  = CFBridgingRelease(ABRecordCopyValue(person, kABPersonLastNameProperty));
+        NSString *fullName =[NSString stringWithFormat:@"%@ %@",firstName,lastName];
+        fullName=[fullName stringByReplacingOccurrencesOfString:@"null" withString:@""];
+        fullName=  [fullName stringByReplacingOccurrencesOfString:@"(" withString:@""];
+        fullName=  [fullName stringByReplacingOccurrencesOfString:@")" withString:@""];
+        ABMultiValueRef phoneNumbers = ABRecordCopyValue(person, kABPersonPhoneProperty);
+        CFIndex numberOfPhoneNumbers = ABMultiValueGetCount(phoneNumbers);
+        for (CFIndex i = 0; i < numberOfPhoneNumbers; i++)
+        {
+            NSString *phoneNumber = CFBridgingRelease(ABMultiValueCopyValueAtIndex(phoneNumbers, i));
+            NSArray*Contacts =[[NSArray alloc]initWithObjects:phoneNumber, nil];
+            for (int j=0; j<[Contacts count]; j++)
+            {
+                NSString*PhoneNumber =[Contacts objectAtIndex:j];
+                NSString*formattedNumber =[self NumberWellFormatted:PhoneNumber];
+              //  NSDictionary*dict =[[NSDictionary alloc]initWithObjectsAndKeys:fullName,@"KFullName",formattedNumber,@"KNumberForSend", nil];
+               // [allName addObject:dict];
+                
+                [allName addObject:formattedNumber];
+               // [[NSUserDefaults standardUserDefaults]setObject:dict forKey:@"KAllPhoneNumbers"];
+                [[NSUserDefaults standardUserDefaults]synchronize];
+               //[self sendRecordSave:fullName And:formattedNumber];
+            }
+        }
+        CFRelease(phoneNumbers);
+    }
+    [[NSUserDefaults standardUserDefaults]setObject:@"ContactsDownLoaded" forKey:KImageDownLoaded];
+    [[NSUserDefaults standardUserDefaults]synchronize];
+    CFRelease(addressBook);
+    return allName;
+}
+
+
+-(NSString*)NumberWellFormatted:(NSString*)numbers
+{
+    numbers = [numbers stringByReplacingOccurrencesOfString:@"(" withString:@""];
+    numbers =[numbers stringByReplacingOccurrencesOfString:@"-" withString:@""];
+    numbers =[numbers stringByReplacingOccurrencesOfString:@" " withString:@""];
+    numbers=  [numbers stringByTrimmingCharactersInSet:
+               [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    numbers = [numbers stringByReplacingOccurrencesOfString:@")" withString:@""];
+    numbers = [numbers stringByReplacingOccurrencesOfString:@"\u00a0" withString:@""];
+    numbers = [numbers stringByReplacingOccurrencesOfString:@" " withString:@""];
+    numbers = [NSString stringWithFormat:@"+%@",numbers];
+    NSString*countryCode3=[[NSUserDefaults standardUserDefaults]objectForKey:kCountryCode];
+    [[NSUserDefaults standardUserDefaults]synchronize];
+    NSString *NumWithOutZero = nil;
+    /*if ([numbers length]>2)
+    {
+        NSString *firstLetter = [numbers substringToIndex:1];
+        NSString *secondLetter = [numbers substringToIndex:2];
+        if([secondLetter isEqualToString:@"00"])
+        {
+            NumWithOutZero = [numbers substringFromIndex:2];
+        }
+        else if ([firstLetter isEqualToString:@"+"])
+        {
+            NumWithOutZero = [numbers substringFromIndex:1];
+        }
+        else if ([firstLetter isEqualToString:@"0"])
+        {
+            NumWithOutZero = [numbers substringFromIndex:1];
+            NumWithOutZero =[countryCode3 stringByAppendingString:NumWithOutZero];
+        }
+        else if (![firstLetter isEqualToString:@"0"]||![firstLetter isEqualToString:@"+"]||![secondLetter isEqualToString:@"00"])
+        {
+            NumWithOutZero = [countryCode3 stringByAppendingString:numbers];
+           // NumWithOutZer =[@"91" stringByAppendingString:numbers];
+        }
+        else
+        {
+        }
+    }*/
+    
+    return numbers;
+    
+}
+
+
+
+-(void)WebServiceResult:(BOOL)success andError:(NSError *)error andResultData:(NSDictionary *)resultDictionary
+{
+    [UtilsNew stopActivityIndicatorInView:self.view];
+    if(resultDictionary == NULL)
+    {
+        
+    }
+    else
+    {
+        if([webService isEqualToString:kGetContacts])
+        {
+           
+        }
+        
+       
+        
+    }
+}
+
+
 
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];

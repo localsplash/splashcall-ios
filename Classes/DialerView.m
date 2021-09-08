@@ -18,6 +18,8 @@
  */
 
 #import <AudioToolbox/AudioToolbox.h>
+#import <CoreTelephony/CTCarrier.h>
+#import <CoreTelephony/CTTelephonyNetworkInfo.h>
 
 #import "LinphoneManager.h"
 #import "PhoneMainView.h"
@@ -48,9 +50,15 @@ static UICompositeViewDescription *compositeDescription = nil;
 
 #pragma mark - ViewController Functions
 
+
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
+    
+    
+  //  NSLog(@"Number is %@",[self phoneNumber]);
+    
 
+    [[NSUserDefaults standardUserDefaults]setBool:true forKey:@"Kdialer"];
 	_padView.hidden =
 		!IPAD && UIInterfaceOrientationIsLandscape(PhoneMainView.instance.mainViewController.currentOrientation);
 
@@ -93,7 +101,15 @@ static UICompositeViewDescription *compositeDescription = nil;
 	} else {
 		linphone_core_enable_video_preview(LC, FALSE);
 	}
-	[_addressField setText:@""];
+    if (selectedCountry){
+        
+    }else{
+        [_addressField setText:@""];
+        _imgFlag.image = [UIImage imageNamed:[NSString stringWithFormat:@"Canada2.png"]];
+
+        
+    }
+    
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -143,7 +159,42 @@ static UICompositeViewDescription *compositeDescription = nil;
 			[_videoCameraSwitch setHidden:FALSE];
 		}
 	}
+   
+    NSString *path = [[NSBundle mainBundle]pathForResource:@"allCountries" ofType:@"plist"];
+    countryName = [[NSArray alloc]initWithContentsOfFile:path];
+    
+       
 }
+
+
+- (IBAction)onCountryCodeClick:(id)sender {
+   
+    CountryListView *view = VIEW(CountryListView);
+    [view setDelegate:(id)self];
+    [PhoneMainView.instance changeCurrentView:view.compositeViewDescription];
+}
+
+#pragma mark - select country delegate
+
+- (void)didSelectCountry:(NSDictionary *)country {
+    
+    selectedCountry = true;
+    [self.view endEditing:YES];
+    [_imgFlag setHidden:false];
+     [_addressField setHidden:false];
+    [_addressField setText:[country objectForKey:@"code"]];
+    _imgFlag.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@2.png",[country objectForKey:@"name"]]];
+    _addressField.text = [country objectForKey:@"code"];
+    
+  //  [_countryButton setTitle:[country objectForKey:@"name"] forState:UIControlStateNormal];
+  //  _countryCodeField.text = [country objectForKey:@"code"];
+    
+   
+    
+    
+}
+
+
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 										 duration:(NSTimeInterval)duration {
@@ -376,6 +427,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 	return YES;
 }
 
+
+
 #pragma mark - MFComposeMailDelegate
 
 - (void)mailComposeController:(MFMailComposeViewController *)controller
@@ -405,9 +458,116 @@ static UICompositeViewDescription *compositeDescription = nil;
 		_addressField.text = @"";
 	}
 	_addContactButton.enabled = _backspaceButton.enabled = ([[_addressField text] length] > 0);
+  
+    if ([[_addressField text] length] > 0){
+        
+      
+
+            [_lblRate setHidden:false];
+            
+            NSString *phoneNumberStr =[_addressField text];
+            self.lblRate.hidden=NO;
+            //NSString*checkZero=[phoneNumberStr  substringToIndex:1];
+            //NSString *secondLetter=[[NSString alloc]init];
+            NSString *secondLetter=nil;
+            NSString *firstLetter = [phoneNumberStr substringToIndex:1];
+            if ([[_addressField text] length] > 2)
+            {
+                secondLetter = [phoneNumberStr substringToIndex:2];
+            }
+            if([secondLetter isEqualToString:@"00"])
+            {
+                NumWithOutZero = [phoneNumberStr substringFromIndex:2];
+                if (NumWithOutZero.length<4)
+                {
+                    self.lblRate.hidden=YES;
+                }
+                else
+                {
+                    self.lblRate.hidden=NO;
+                }
+                //[self matchCountryCode:NumWithOutZero];
+            }
+            else if ([firstLetter isEqualToString:@"+"])
+            {
+                NumWithOutZero = [phoneNumberStr substringFromIndex:1];
+                if (NumWithOutZero.length<4)
+                {
+                    self.lblRate.hidden=YES;
+                }
+                else
+                {
+                    self.lblRate.hidden=NO;
+                }
+               // [self matchCountryCode:NumWithOutZero];
+            }
+            else if ([firstLetter isEqualToString:@"0"])
+            {
+                NumWithOutZero = [phoneNumberStr substringFromIndex:1];
+                //NSString*registreCodeNumber= [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:kCountryCode]];
+               // [[NSUserDefaults standardUserDefaults]synchronize];
+               // [self matchCountryCode:NumWithOutZero];
+               // NSString*numberWithCode =[NSString stringWithFormat:@"%@%@",registreCodeNumber,NumWithOutZero];
+               // [self HideShowRate:numberWithCode];
+               // [self matchCountryCode:registreCodeNumber];
+            }
+            else if (![firstLetter isEqualToString:@"0"]||![firstLetter isEqualToString:@"+"]||![secondLetter isEqualToString:@"00"])
+            {
+               // NSString*registerContry =[[NSUserDefaults standardUserDefaults]objectForKey:kSignUpCountry];
+               // [[NSUserDefaults standardUserDefaults]synchronize];
+               // NSString*registreCodeNumber= [NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:kCountryCode]];
+               // [[NSUserDefaults standardUserDefaults]synchronize];
+               // NSString*numberWithCode =[NSString stringWithFormat:@"%@%@",registreCodeNumber,phoneNumberStr];
+               // [self HideShowRate:numberWithCode];
+              //  NumWithOutZero =[registreCodeNumber stringByAppendingString:phoneNumberStr];
+                
+                self.lblRate.text=@"";
+               // NumWithOutZero =registreCodeNumber;
+               // [self.countryImage setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@2.png",registerContry]]];
+               // [self matchCountryCode:NumWithOutZero];
+              //  [self matchRegisterCountryCode:NumWithOutZero];
+            }
+           // _lblRate.text = [self countryNameUsing:[_addressField text]];
+        //[self rateShow];
+        
+        if  ([NumWithOutZero length] == 2 && [NumWithOutZero length] < 5 ) {
+            
+           // _lblRate.text  = [self findCountryCode:NumWithOutZero];
+           // [_lblRate setHidden:false];
+           // [_imgFlag setHighlighted:false];
+        }
+        
+        if  ([NumWithOutZero isEqualToString:@"1"]){
+            
+           // _lblRate.text  = [self findCountryCode:NumWithOutZero];
+           // [_lblRate setHidden:false];
+           // [_imgFlag setHighlighted:false];
+        }
+       
+    }
+    
+    
     if ([_addressField.text length] == 0) {
         [self.view endEditing:YES];
+       // [_lblRate setHidden:true];
+       // [_imgFlag setHidden:true];
     }
+}
+
+-(NSString*)findCountryCode:(NSString*)cCode
+{
+    for (NSDictionary *name in countryName)
+    {
+        NSString *FindName =[name objectForKey:@"ISD"];
+        if ([FindName isEqualToString:cCode])
+        {
+            [_imgFlag setHidden:false];
+            NSString *code =[name objectForKey:@"ISD"];
+            _imgFlag.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@2.png",[name objectForKey:@"name"]]];
+            return [name objectForKey:@"name"];
+        }
+    }
+    return @"";
 }
 
 - (IBAction)onBackspaceClick:(id)sender {
@@ -445,4 +605,8 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)dismissKeyboards {
 	[self.addressField resignFirstResponder];
 }
+
+
+
+
 @end

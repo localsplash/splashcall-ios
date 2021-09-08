@@ -177,7 +177,7 @@
 - (IBAction)onSMSInviteClick:(id)sender {
     MFMessageComposeViewController *controller = [[MFMessageComposeViewController alloc] init];
     if([MFMessageComposeViewController canSendText]) {
-        controller.body = NSLocalizedString(@"Hello! Join me on Linphone! You can download it for free at: https://www.linphone.org/download",nil);
+        controller.body = NSLocalizedString(@"Jirtuu bilbilaa sagalee qulqulluu ajaa'ibaa Jirtuu bilbilli vidiyoo bilbiluu fi erga barreessuu yoo feetan toladha kafaltii malee vidiyoon hasa'uu fi ergaa barreessuuf gatii ituu hin baasin jirtuu bilbila gargaaramaa jennee isin gorsina Jirtuu bilbilatti yoo gargaaramtan gatiin isaa  gadi bu'aadha keessattuu vidiyoo bilbiluu fi erga barressuun tola akka ta'ee isinitti beeksifnaa .kanaafuu Ethio telcom safaricom MTN fi kan biraas yoo feetan linkii kana tuqudhaan bilbila kessan irratti Jirtuu bilbilaa kana fe'adhaa isiniin jenna",nil);
         controller.recipients = [NSArray arrayWithObjects:[self.addressLabel text], nil];
         
         controller.messageComposeDelegate = PhoneMainView.instance;

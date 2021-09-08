@@ -43,4 +43,5 @@
 - (IBAction)onPhoneNumberDisclosureClick:(id)sender;
 - (IBAction)onMaybeLater:(id)sender;
 
++(void)borderOfTextField:(UITextField*)textField;
 @end

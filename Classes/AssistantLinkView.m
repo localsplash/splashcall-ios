@@ -33,7 +33,11 @@
 	// every UITextField subviews with phone keyboard must be tweaked to have a done button
 	[self addDoneButtonRecursivelyInView:self.view];
 	self.phoneField.delegate = self; self.firstTime = TRUE;
+    self.phoneField.layer.borderColor = [UIColor redColor].CGColor;
+    
+    self.phoneField.layer.borderColor=[[UIColor colorWithRed:61.0f/255.0f green:15.0f/255.0f blue:14.0f/255.0f alpha:1.0] CGColor];
 }
+
 
 - (void)addDoneButtonRecursivelyInView:(UIView *)subview {
 	for (UIView *child in [subview subviews]) {
@@ -243,7 +247,7 @@ void assistant_activate_phone_number_link(LinphoneAccountCreator *creator, Linph
 		_countryCodeField.layer.borderColor = [[UIColor redColor] CGColor];
 		self.linkAccountButton.enabled = FALSE;
 	} else {
-		_countryCodeField.layer.borderColor = [[UIColor clearColor] CGColor];
+		_countryCodeField.layer.borderColor = [[UIColor yellowColor] CGColor];
 		if (_phoneField.layer.borderColor != [[UIColor redColor] CGColor]) {
 			self.linkAccountButton.enabled = TRUE;
 		}
@@ -314,6 +318,7 @@ void assistant_activate_phone_number_link(LinphoneAccountCreator *creator, Linph
 - (void)didSelectCountry:(NSDictionary *)country {
 	[_countryButton setTitle:[country objectForKey:@"name"] forState:UIControlStateNormal];
 	_countryCodeField.text = [country objectForKey:@"code"];
+    
 }
 
 #pragma mark - UITextFieldDelegate Functions
@@ -329,12 +334,30 @@ void assistant_activate_phone_number_link(LinphoneAccountCreator *creator, Linph
 		self.phoneField.layer.borderColor = [[UIColor redColor] CGColor];
 		self.linkAccountButton.enabled = FALSE;
 	} else {
-		self.phoneField.layer.borderColor = [[UIColor clearColor] CGColor];
+		self.phoneField.layer.borderColor = [[UIColor yellowColor] CGColor];
+      
+
 		if (_countryCodeField.layer.borderColor != [[UIColor redColor] CGColor]){
 			self.linkAccountButton.enabled = TRUE;
 		}
 	}
 	return YES;
+}
+
+
+
+
++(void)borderOfTextField:(UITextField*)textField;{
+    
+    [[textField layer] setBorderColor:[[UIColor colorWithRed:87.0/255.0
+    green:14.0/255.0
+     blue:18.0/255.0
+    alpha:1.0] CGColor]];
+    
+    
+    textField.layer.cornerRadius = 10;
+    textField.layer.masksToBounds = YES;
+    textField.layer.borderWidth = 1;
 }
 
 @end

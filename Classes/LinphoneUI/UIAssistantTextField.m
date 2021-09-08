@@ -37,6 +37,7 @@ INIT_WITH_COMMON_CF {
 	self.layer.cornerRadius = 4.f;
 	self.autoresizingMask = YES;
 	self.layer.borderColor = _errorLabel.hidden ? [[UIColor clearColor] CGColor] : [[UIColor redColor] CGColor];
+    
 }
 
 - (void)showError:(NSString *)msg when:(DisplayErrorPred)apred {
@@ -64,8 +65,11 @@ INIT_WITH_COMMON_CF {
 }
 
 - (void)setEnabled:(BOOL)enabled {
-	[super setEnabled:enabled];
+	
+    [super setEnabled:enabled];
 	self.backgroundColor = [self.backgroundColor colorWithAlphaComponent:enabled?1:0.3];
+  //  self.layer.borderColor=[[UIColor colorWithRed:61.0f/255.0f green:15.0f/255.0f blue:14.0f/255.0f alpha:1.0] CGColor];
+    
 }
 
 #pragma mark - UITextFieldDelegate Functions

@@ -58,7 +58,7 @@
 	_sideMenuEntries = [[NSMutableArray alloc] init];
 
 	[_sideMenuEntries
-		addObject:[[SideMenuEntry alloc] initWithTitle:NSLocalizedString(@"Assistant", nil)
+		addObject:[[SideMenuEntry alloc] initWithTitle:NSLocalizedString(@"Log out", nil)
                                                  image:[UIImage imageNamed:@"menu_assistant.png"]
 											  tapBlock:^() {
 												[PhoneMainView.instance
@@ -75,7 +75,7 @@
 												  }]];
 	}
 
-    
+  /*
 	[_sideMenuEntries
 		addObject:[[SideMenuEntry alloc] initWithTitle:NSLocalizedString(@"Settings", nil)
                                                  image:[UIImage imageNamed:@"menu_options.png"]
@@ -89,7 +89,7 @@
                                            tapBlock:^() {
                                                [PhoneMainView.instance
                                                 changeCurrentView:RecordingsListView.compositeViewDescription];
-                                           }]];
+                                           }]];*/
 	InAppProductsManager *iapm = LinphoneManager.instance.iapManager;
 	if (iapm.enabled){
 		[_sideMenuEntries
@@ -159,8 +159,10 @@
 	[tableView deselectRowAtIndexPath:indexPath animated:NO];
 
 	if (indexPath.section == 0) {
-		[PhoneMainView.instance changeCurrentView:SettingsView.compositeViewDescription];
+		//[PhoneMainView.instance changeCurrentView:SettingsView.compositeViewDescription];
 	} else {
+        [[NSUserDefaults standardUserDefaults]setBool:false forKey:@"Kdialer"];
+
 		SideMenuEntry *entry = [_sideMenuEntries objectAtIndex:indexPath.row];
 		LOGI(@"Entry %@ has been tapped", entry->title);
 		if (entry->onTapBlock == nil) {

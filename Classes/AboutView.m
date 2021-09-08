@@ -63,7 +63,20 @@ static UICompositeViewDescription *compositeDescription = nil;
 	tapGestureRecognizerPolicy.numberOfTapsRequired = 1;
 	[_policyLabel addGestureRecognizer:tapGestureRecognizerPolicy];
 	_policyLabel.userInteractionEnabled = YES;
+   
+    
+    
 }
+
+
+-(void)viewWillAppear:(BOOL)animated{
+    
+    NSString *urlAddress = @"https://localsplash.com/about-us";
+    NSURL *essaUrl = [NSURL URLWithString:urlAddress];
+    NSURLRequest *requestObj = [NSURLRequest requestWithURL:essaUrl];
+    [self.webVw loadRequest:requestObj];
+}
+
 
 #pragma mark - Action Functions
 

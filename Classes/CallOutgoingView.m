@@ -61,8 +61,10 @@ static UICompositeViewDescription *compositeDescription = nil;
 	if (!call) {
 		return;
 	}
-
+    [_addressLabel setHidden:true];
+    
 	const LinphoneAddress *addr = linphone_call_get_remote_address(call);
+    
 	[ContactDisplay setDisplayNameLabel:_nameLabel forAddress:addr withAddressLabel:_addressLabel];
 	char *uri = linphone_address_as_string_uri_only(addr);
 	ms_free(uri);

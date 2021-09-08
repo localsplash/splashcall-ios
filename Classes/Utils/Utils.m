@@ -28,8 +28,14 @@
 #import "FastAddressBook.h"
 #import "ColorSpaceUtilities.h"
 
+
 @implementation LinphoneUtils
 
+NSNumber *balance = 0;
+NSString *userName;
+NSString *userPassword;
+NSArray *jirtuArr;
+BOOL selectedCountry;
 + (BOOL)hasSelfAvatar {
 	return [LinphoneManager.instance lpConfigStringForKey:@"avatar"] != nil;
 }
@@ -44,6 +50,77 @@
 		duration = duration % 3600;
 	}
 	return [result stringByAppendingString:[NSString stringWithFormat:@"%02i:%02i", (duration / 60), (duration % 60)]];
+}
+
+
++(void)getBalance:(NSString*)strToken{
+    
+        
+       
+       // NSString *strNumberWithCode = [NSString stringWithFormat:@"+%@%@",strCode,strPhone];
+        NSString *urlString = [NSString stringWithFormat:@"%@balance",
+                               BASE_URL];
+       // NSDictionary *jsonBodyDict = @{@"phone_number":strNumberWithCode, @"code":_txtFldOTP.text};
+        
+       // NSData *jsonBodyData = [NSJSONSerialization dataWithJSONObject:jsonBodyDict options:kNilOptions error:nil];
+        
+        NSMutableURLRequest *request = [NSMutableURLRequest new];
+        request.HTTPMethod = @"GET";
+        //Bearer
+        ;
+        [request setURL:[NSURL URLWithString:urlString]];
+        [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+        [request addValue:[NSString stringWithFormat:@"Bearer %@",strToken] forHTTPHeaderField:@"Authorization"];
+
+      //  [request setHTTPBody:jsonBodyData];
+        NSLog(@"%@", [NSString stringWithFormat:@"Bearer %@",strToken]);
+        
+        NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+        NSURLSession *session = [NSURLSession sessionWithConfiguration:config
+                                                              delegate:nil
+                                                         delegateQueue:[NSOperationQueue mainQueue]];
+        NSURLSessionDataTask *task = [session dataTaskWithRequest:request
+                                                completionHandler:^(NSData * _Nullable data,
+                                                                    NSURLResponse * _Nullable response,
+                                                                    NSError * _Nullable error) {
+           
+            
+            NSHTTPURLResponse *asHTTPResponse = (NSHTTPURLResponse *) response;
+            //_waitView.hidden = YES;
+            NSDictionary *forJSONObject = [NSJSONSerialization JSONObjectWithData:data
+                                                                                       options:kNilOptions
+                                                                                         error:nil];
+            
+            if (asHTTPResponse.statusCode == 200){
+                
+        
+              balance   = [forJSONObject objectForKey:@"balance"];
+
+             
+                
+                
+            }else{
+                
+                NSString *errorMsg = [forJSONObject objectForKey:@"status"];
+                UIAlertController *errView = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Jirttu", nil)
+                                                                                 message:NSLocalizedString(errorMsg, nil)
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+                
+                UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK"
+                                                                        style:UIAlertActionStyleDefault
+                                                                      handler:^(UIAlertAction * action) {}];
+                
+                [errView addAction:defaultAction];
+                //[self presentViewController:errView animated:YES completion:nil];
+                
+            }
+            
+            
+            
+        }];
+        [task resume];
+    
 }
 
 + (NSString *) intervalToString:(NSTimeInterval)interval {
@@ -632,7 +709,9 @@
 	if (range.location != NSNotFound) {
 		tmpAddress = [tmpAddress substringToIndex:range.location];
 	}
-	addressLabel.text = tmpAddress;
+   
+	//addressLabel.text = tmpAddress;
+    addressLabel.text = @"";
 }
 
 

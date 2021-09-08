@@ -22,7 +22,9 @@
 #import "UICompositeView.h"
 #import "ContactsListTableView.h"
 #import "UIInterfaceStyleButton.h"
-
+#import "WebServiceConnector.h"
+#import "UtilsNew.h"
+#import "defines.h"
 typedef enum _ContactSelectionMode { ContactSelectionModeNone, ContactSelectionModeEdit } ContactSelectionMode;
 
 @interface ContactSelection : NSObject <UISearchBarDelegate> {
@@ -70,7 +72,12 @@ typedef enum _ContactSelectionMode { ContactSelectionModeNone, ContactSelectionM
 
 @end
 
-@interface ContactsListView : UIViewController <UICompositeViewDelegate, UISearchBarDelegate, UIGestureRecognizerDelegate>
+@interface ContactsListView : UIViewController <UICompositeViewDelegate, UISearchBarDelegate, UIGestureRecognizerDelegate>{
+   
+    WebServiceConnector* connector;
+    NSString* webService;
+}
+
 
 @property(strong, nonatomic) IBOutlet ContactsListTableView *tableController;
 @property(strong, nonatomic) IBOutlet UIView *topBar;

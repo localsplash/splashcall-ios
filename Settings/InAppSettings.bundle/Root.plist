@@ -5,30 +5,6 @@
 	<key>PreferenceSpecifiers</key>
 	<array>
 		<dict>
-			<key>Title</key>
-			<string>SIP accounts</string>
-			<key>Type</key>
-			<string>PSGroupSpecifier</string>
-		</dict>
-		<dict>
-			<key>Key</key>
-			<string>assistant_button</string>
-			<key>Title</key>
-			<string>Run assistant</string>
-			<key>Type</key>
-			<string>IASKButtonSpecifier</string>
-		</dict>
-		<dict>
-			<key>Key</key>
-			<string>menu_account_1</string>
-			<key>File</key>
-			<string>Account</string>
-			<key>Title</key>
-			<string>Account 1</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
 			<key>Key</key>
 			<string>menu_account_2</string>
 			<key>File</key>
@@ -126,29 +102,11 @@
 		</dict>
 		<dict>
 			<key>Key</key>
-			<string>network_menu</string>
-			<key>File</key>
-			<string>Network</string>
-			<key>Title</key>
-			<string>Network</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>Key</key>
 			<string>tunnel_menu</string>
 			<key>File</key>
 			<string>Tunnel</string>
 			<key>Title</key>
 			<string>Tunnel</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
-			<string>Advanced</string>
-			<key>Title</key>
-			<string>Advanced</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>

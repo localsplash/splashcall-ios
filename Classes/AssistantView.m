@@ -28,6 +28,7 @@
 #import "UIAssistantTextField.h"
 #import "UITextField+DoneButton.h"
 #import "LinphoneAppDelegate.h"
+#import "Utils.h"
 
 typedef enum _ViewElement {
 	ViewElement_Username = 100,
@@ -53,6 +54,10 @@ typedef enum _ViewElement {
 
 @implementation AssistantView
 
+@synthesize ivScreenImage,lblScreenLabel;
+@synthesize pageIndex,imgFile,txtTitle;
+@synthesize txtVWDescription,btnNxt;
+
 #pragma mark - Lifecycle Functions
 
 - (id)init {
@@ -66,6 +71,7 @@ typedef enum _ViewElement {
 	return self;
 }
 
+
 #pragma mark - UICompositeViewDelegate Functions
 
 static UICompositeViewDescription *compositeDescription = nil;
@@ -73,9 +79,9 @@ static UICompositeViewDescription *compositeDescription = nil;
 + (UICompositeViewDescription *)compositeViewDescription {
 	if (compositeDescription == nil) {
 		compositeDescription = [[UICompositeViewDescription alloc] init:self.class
-															  statusBar:StatusBarView.class
+															  statusBar:nil
 																 tabBar:nil
-															   sideMenu:SideMenuView.class
+															   sideMenu:nil
 															 fullscreen:false
 														 isLeftFragment:NO
 														   fragmentWith:nil];
@@ -94,6 +100,80 @@ static UICompositeViewDescription *compositeDescription = nil;
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
+    
+    _vwCountry.layer.cornerRadius=8.0f;
+    _vwCountry.layer.masksToBounds=YES;
+    _vwCountry.layer.borderColor=[[UIColor colorWithRed:18.0f/255.0f green:29.0f/255.0f blue:95.0f/255.0f alpha:1.0] CGColor];
+    _vwCountry.layer.borderWidth= 1.0f;
+    
+    
+    
+    
+    _VWMobile.layer.cornerRadius=8.0f;
+    _VWMobile.layer.masksToBounds=YES;
+    _VWMobile.layer.borderColor=[[UIColor colorWithRed:18.0f/255.0f green:29.0f/255.0f blue:95.0f/255.0f alpha:1.0] CGColor];
+    _VWMobile.layer.borderWidth= 1.0f;
+    
+    
+    _txtFldUserName.layer.cornerRadius=8.0f;
+    _txtFldUserName.layer.masksToBounds=YES;
+    _txtFldUserName.layer.borderColor=[[UIColor colorWithRed:61.0f/255.0f green:15.0f/255.0f blue:14.0f/255.0f alpha:1.0] CGColor];
+    _txtFldUserName.layer.borderWidth= 1.0f;
+    
+    _txtFldPassword.layer.cornerRadius=8.0f;
+    _txtFldPassword.layer.masksToBounds=YES;
+    _txtFldPassword.layer.borderColor=[[UIColor colorWithRed:61.0f/255.0f green:15.0f/255.0f blue:14.0f/255.0f alpha:1.0] CGColor];
+    _txtFldPassword.layer.borderWidth= 1.0f;
+    
+    _btnLogin.layer.cornerRadius=8.0f;
+    _btnLogin.layer.masksToBounds=YES;
+//    _btnLogin.layer.borderColor=[[UIColor colorWithRed:61.0f/255.0f green:15.0f/255.0f blue:14.0f/255.0f alpha:1.0] CGColor];
+//    _btnLogin.layer.borderWidth= 1.0f;
+//
+    
+    _btnRegister.layer.cornerRadius=8.0f;
+    _btnRegister.layer.masksToBounds=YES;
+    
+    
+    
+    _btnVerify.layer.cornerRadius=8.0f;
+    _btnVerify.layer.masksToBounds=YES;
+    
+    
+    _btnResend.layer.cornerRadius=8.0f;
+    _btnResend.layer.masksToBounds=YES;
+    
+    _txtFldOTP.layer.cornerRadius=8.0f;
+    _txtFldOTP.layer.masksToBounds=YES;
+    _txtFldOTP.layer.borderColor=[[UIColor colorWithRed:61.0f/255.0f green:15.0f/255.0f blue:14.0f/255.0f alpha:1.0] CGColor];
+    _txtFldOTP.layer.borderWidth= 1.0f;
+    
+   // _btnRegister.layer.borderColor=[[UIColor colorWithRed:61.0f/255.0f green:15.0f/255.0f blue:14.0f/255.0f alpha:1.0] CGColor];
+  //  _btnRegister.layer.borderWidth= 1.0f;
+    
+    
+    
+   /* _border.layer.cornerRadius=8.0f;
+    _border.layer.masksToBounds=YES;
+    _border.layer.borderColor=[[UIColor colorWithRed:63.0f/255.0f green:127.0f/255.0f blue:55.0f/255.0f alpha:1.0] CGColor];
+    _border.layer.borderWidth= 1.0f;
+    
+    _border1.layer.cornerRadius=8.0f;
+    _border1.layer.masksToBounds=YES;
+    _border1.layer.borderColor=[[UIColor colorWithRed:63.0f/255.0f green:127.0f/255.0f blue:55.0f/255.0f alpha:1.0] CGColor];
+    _border1.layer.borderWidth= 1.0f;*/
+
+
+  /*  _borderVerify.layer.cornerRadius=8.0f;
+    _borderVerify.layer.masksToBounds=YES;
+    _borderVerify.layer.borderColor=[[UIColor colorWithRed:63.0f/255.0f green:127.0f/255.0f blue:55.0f/255.0f alpha:1.0] CGColor];
+    _borderVerify.layer.borderWidth= 1.0f;*/
+    
+    _btnRegister1.layer.cornerRadius=8.0f;
+    _btnRegister1.layer.masksToBounds=YES;
+    
+    _btnLogin1.layer.cornerRadius=8.0f;
+    _btnLogin1.layer.masksToBounds=YES;
 	[NSNotificationCenter.defaultCenter addObserver:self
 										   selector:@selector(registrationUpdateEvent:)
 											   name:kLinphoneRegistrationUpdate
@@ -113,12 +193,91 @@ static UICompositeViewDescription *compositeDescription = nil;
 		new_config = NULL;
 		number_of_configs_before = bctbx_list_size(linphone_core_get_proxy_config_list(LC));
 		[self resetTextFields];
-		[self changeView:_welcomeView back:FALSE animation:FALSE];
+        [self reset];
+        
+        nextView = _loginView;
+		[self changeView:_loginView back:FALSE animation:FALSE];
+        [self loadAssistantConfig:@"assistant_external_sip.rc"];
+
 	}
 	mustRestoreView = NO;
 	_outgoingView = DialerView.compositeViewDescription;
     _qrCodeButton.hidden = !ENABLE_QRCODE;
 	[self resetLiblinphone:FALSE];
+    NSString *path = [[NSBundle mainBundle]pathForResource:@"allCountries" ofType:@"plist"];
+    countryName = [[NSArray alloc]initWithContentsOfFile:path];
+   
+    UIAssistantTextField *countryCodeField = [self findTextField:ViewElement_PhoneCC];
+
+    [self findCountryCode:countryCodeField.text];
+
+    self.phoneLabel.hidden = true;
+    [self.phoneLabel setHidden:true];
+}
+
+- (IBAction)btnResendOtp:(id)sender {
+    
+    NSString *strNumberWithCode = [NSString stringWithFormat:@"%@%@",strCode,strPhone];
+    NSString *strCode = [self getRandomPINString:5];
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@REQUEST=SENDOTP&PHONENUMBER=%@&OTP=%@",
+                           BASE_URL,strNumberWithCode,strCode];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest new];
+    request.HTTPMethod = @"GET";
+    [request setURL:[NSURL URLWithString:urlString]];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    
+    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:config
+                                                          delegate:nil
+                                                     delegateQueue:[NSOperationQueue mainQueue]];
+    NSURLSessionDataTask *task = [session dataTaskWithRequest:request
+                                            completionHandler:^(NSData * _Nullable data,
+                                                                NSURLResponse * _Nullable response,
+                                                                NSError * _Nullable error) {
+        
+        NSHTTPURLResponse *asHTTPResponse = (NSHTTPURLResponse *) response;
+        NSDictionary *forJSONObject = [NSJSONSerialization JSONObjectWithData:data
+                                                                      options:kNilOptions
+                                                                        error:nil];
+        
+        if (asHTTPResponse.statusCode == 200){
+            
+            
+            _waitView.hidden = YES;
+            
+            
+        }else{
+            
+            _waitView.hidden = YES;
+            
+            NSString *errorMsg = [forJSONObject objectForKey:@"status"];
+            UIAlertController *errView = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"SplashCall", nil)
+                                                                             message:NSLocalizedString(errorMsg, nil)
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK"
+                                                                    style:UIAlertActionStyleDefault
+                                                                  handler:^(UIAlertAction * action) {}];
+            
+            [errView addAction:defaultAction];
+            [self presentViewController:errView animated:YES completion:nil];
+            
+        }
+        
+    }];
+    [task resume];
+    
+}
+
++ (void) borderWithCornerRadius:(UITextField*)textField{
+    
+    textField.layer.borderWidth = 2.0f;
+    textField.layer.borderColor = [[UIColor redColor] CGColor];
+    textField.layer.cornerRadius = 5;
+    textField.clipsToBounds      = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -186,9 +345,11 @@ static UICompositeViewDescription *compositeDescription = nil;
 }
 
 - (void)reset {
+    
+    [_backButton setHidden:true];
 	[LinphoneManager.instance removeAllAccounts];
 	[self resetTextFields];
-	[self changeView:_welcomeView back:FALSE animation:FALSE];
+	[self changeView:_loginView back:FALSE animation:FALSE];
 	_waitView.hidden = TRUE;
 }
 
@@ -619,7 +780,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 #if DEBUG
 		UIAssistantTextField *atf =
 			(UIAssistantTextField *)[self findView:ViewElement_Domain inView:view ofType:UIAssistantTextField.class];
-		atf.text = @"test.linphone.org";
+		atf.text = @"jlocalsplash.com";
 #endif
 	}
 	phone_number_length = 0;
@@ -1091,14 +1252,13 @@ void assistant_is_account_used(LinphoneAccountCreator *creator, LinphoneAccountC
 	thiz.waitView.hidden = YES;
 	[thiz isAccountUsed:status withResp:resp];
 }
-
 void assistant_create_account(LinphoneAccountCreator *creator, LinphoneAccountCreatorStatus status, const char *resp) {
 	AssistantView *thiz = (__bridge AssistantView *)(linphone_account_creator_get_user_data(creator));
 	thiz.waitView.hidden = YES;
 	if (status == LinphoneAccountCreatorStatusAccountCreated) {
 		if (linphone_account_creator_get_phone_number(creator)) {
 			NSString* phoneNumber = [NSString stringWithUTF8String:linphone_account_creator_get_phone_number(creator)];
-			thiz.activationSMSText.text = [NSString stringWithFormat:NSLocalizedString(@"We have sent a SMS with a validation code to %@. To complete your phone number verification, please enter the 4 digit code below:", nil), phoneNumber];
+			//thiz.activationSMSText.text = [NSString stringWithFormat:NSLocalizedString(@"A code was sent to  %@ It should arrive shortly ", nil), phoneNumber];
 			[thiz changeView:thiz.createAccountActivateSMSView back:FALSE animation:TRUE];
 		} else {
 			NSString* email = [NSString stringWithUTF8String:linphone_account_creator_get_email(creator)];
@@ -1116,7 +1276,7 @@ void assistant_recover_phone_account(LinphoneAccountCreator *creator, LinphoneAc
 	thiz.waitView.hidden = YES;
 	if (status == LinphoneAccountCreatorStatusRequestOk) {
 		NSString* phoneNumber = [NSString stringWithUTF8String:linphone_account_creator_get_phone_number(creator)];
-		thiz.activationSMSText.text = [NSString stringWithFormat:NSLocalizedString(@"We have sent a SMS with a validation code to %@. To complete your phone number verification, please enter the 4 digit code below:", nil), phoneNumber];
+		//thiz.activationSMSText.text = [NSString stringWithFormat:NSLocalizedString(@"A code was sent to  %@ It should arrive shortly ", nil), phoneNumber];
 		[thiz changeView:thiz.createAccountActivateSMSView back:FALSE animation:TRUE];
 	} else {
 		if(!resp) {
@@ -1221,6 +1381,21 @@ void assistant_is_account_linked(LinphoneAccountCreator *creator, LinphoneAccoun
 - (BOOL)textField:(UITextField *)textField
 	shouldChangeCharactersInRange:(NSRange)range
 				replacementString:(NSString *)string {
+    
+    
+    
+    if (textField.tag == 11111) {
+        
+        NSCharacterSet *numbersOnly = [NSCharacterSet characterSetWithCharactersInString:@"0123456789"];
+               NSCharacterSet *characterSetFromTextField = [NSCharacterSet characterSetWithCharactersInString:textField.text];
+
+        BOOL stringIsValid = [numbersOnly isSupersetOfSet:characterSetFromTextField];
+        return stringIsValid;
+    }
+        
+        
+        
+       
 	if (textField.tag == ViewElement_SMSCode) {
 		// max 4 length
 		return range.location + range.length <= 4;
@@ -1270,11 +1445,18 @@ void assistant_is_account_linked(LinphoneAccountCreator *creator, LinphoneAccoun
 #pragma mark - Action Functions
 
 - (IBAction)onGotoCreateAccountClick:(id)sender {
+    
+   /*  [_backButton setHidden:false];
     ONCLICKBUTTON(sender, 100, {
 		nextView = _createAccountView;
 		_accountLabel.text = NSLocalizedString(@"Please enter your phone number", nil);
         [self loadAssistantConfig:@"assistant_linphone_create.rc"];
-    });
+    });*/
+    _titleLabel.text = @"Register";
+     [_backButton setHidden:false];
+     nextView = _createAccountView;
+    _accountLabel.text = NSLocalizedString(@"Please enter your phone number", nil);
+    [self loadAssistantConfig:@"assistant_linphone_create.rc"];
 }
 
 - (IBAction)onGotoLinphoneLoginClick:(id)sender {
@@ -1301,17 +1483,298 @@ void assistant_is_account_linked(LinphoneAccountCreator *creator, LinphoneAccoun
 }
 
 - (IBAction)onCreateAccountClick:(id)sender {
+    
+    
 	if ([self checkFields]) {
-		ONCLICKBUTTON(sender, 100, {
+		/*ONCLICKBUTTON(sender, 100, {
 			_activationTitle.text = @"CREATE ACCOUNT";
 			_waitView.hidden = NO;
 			linphone_account_creator_is_account_exist(account_creator);
-		});
-	}
+		});*/
+
+
+
+        UIAssistantTextField* countryCodeField = [self findTextField:ViewElement_PhoneCC];
+        UIAssistantTextField *phone = [self findTextField:ViewElement_Phone];
+        strCode = countryCodeField.text;
+        strPhone = phone.text;
+        
+        if ([phone.text isEqualToString:@""]){
+             
+            
+            
+            UIAlertController *errView = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"SplashCall", nil)
+                                                                             message:NSLocalizedString(@"enter phone number", nil)
+                                                                                   preferredStyle:UIAlertControllerStyleAlert];
+
+                         UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK"
+                                                                                 style:UIAlertActionStyleDefault
+                                                                               handler:^(UIAlertAction * action) {}];
+
+                         [errView addAction:defaultAction];
+                         [self presentViewController:errView animated:YES completion:nil];
+
+        }
+        else{
+            
+            NSString *strNumberWithCode = [NSString stringWithFormat:@"%@",phone.text ];
+            strPhone = strNumberWithCode;
+            [self login:strNumberWithCode];
+        }
+   }
+}
+
+-(void)login:(NSString*)phoneNumber{
+    // [self changeView:_createAccountActivateSMSView back:FALSE animation:TRUE];
+
+// NSString *strNumberWithCode = [NSString stringWithFormat:@"%@%@",countryCodeField.text,phone.text ];
+NSString *strNumberWithCode = [NSString stringWithFormat:@"%@",phoneNumber];
+
+ _titleLabel.text = @"Verify";
+ _activationTitle.text = @"Verify Account";
+ _waitView.hidden = NO;
+ _txtFldOTP.text = @"";
+ 
+ //NSString *strCode = [self getRandomPINString:5];
+ //NSString*token = [[NSUserDefaults standardUserDefaults] objectForKey:ktoken];
+     //https://webhook.relevantads.com/api/SplashCallOTP/DeviceLogin?deviceUID=03df25c845d460bcdad7802d2vf6fc1dfde97283bf75cc993eb6dca835ea2e2f&phoneNumber=917530965063
+     
+ NSString*token =   @"yyuyjjjjjjkkklljhhjjhhjjnkkllllllll";
+ 
+ NSString *urlString = [NSString stringWithFormat:@"%@DeviceLogin?deviceUID=%@&phoneNumber=%@",
+                        BASE_URL,token,strNumberWithCode];
+
+ NSMutableURLRequest *request = [NSMutableURLRequest new];
+ request.HTTPMethod = @"GET";
+ [request setURL:[NSURL URLWithString:urlString]];
+ [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+ [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+// [request setHTTPBody:jsonBodyData];
+
+ NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+ NSURLSession *session = [NSURLSession sessionWithConfiguration:config
+                                                       delegate:nil
+                                                  delegateQueue:[NSOperationQueue mainQueue]];
+ NSURLSessionDataTask *task = [session dataTaskWithRequest:request
+                                         completionHandler:^(NSData * _Nullable data,
+                                                             NSURLResponse * _Nullable response,
+                                                             NSError * _Nullable error) {
+
+ NSHTTPURLResponse *asHTTPResponse = (NSHTTPURLResponse *) response;
+ NSDictionary *forJSONObject = [NSJSONSerialization JSONObjectWithData:data
+                                                                                 options:kNilOptions
+                                                                                   error:nil];
+
+     
+       if (asHTTPResponse.statusCode == 200){
+
+           
+            _waitView.hidden = YES;
+           
+           //If repsonse have pwd and name then call signInMEthod
+           [self signInUsing: [[forJSONObject objectForKey:@"sipSettings"] objectForKey:@"sipExtension"] andPassword: [[forJSONObject objectForKey:@"sipSettings"] objectForKey:@"secret"] serverIp:[[forJSONObject objectForKey:@"sipSettings"] objectForKey:@"sipServerIP"]];
+           
+           //If response
+           _activationSMSText.text = [NSString stringWithFormat:NSLocalizedString(@"A code was sent to  %@ It should arrive shortly ", nil), strNumberWithCode];
+           [self changeView:_createAccountActivateSMSView back:FALSE animation:TRUE];
+
+       }else{
+
+           _waitView.hidden = YES;
+           if (asHTTPResponse.statusCode == 1980){
+               
+               [self showAlert:@"Invalid Number"];
+           }else if (asHTTPResponse.statusCode == 2003){
+               
+               [self showAlert:@"Client not reconized"];
+           }
+           else if  ([[NSString stringWithFormat:@"%@",[forJSONObject objectForKey:@"iRet"]]  isEqual: @"404"]) {
+               
+               //[self showAlert:@"Temperary unavailable / try again in few seconds"];
+               [self otpRequest:strNumberWithCode and:token];
+           }else if (asHTTPResponse.statusCode == 500){
+               
+               //[self showAlert:@"Temperary unavailable / try again in few seconds"];
+               
+               [self otpRequest:strNumberWithCode and:token];
+           }
+       }}];
+ [task resume];
+
+}
+
+-(void)showAlert:(NSString*)message{
+    
+    
+    NSString *errorMsg = message;
+    UIAlertController *errView = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"SplashCall", nil)
+                                                                                  message:NSLocalizedString(errorMsg, nil)
+                                                                           preferredStyle:UIAlertControllerStyleAlert];
+
+                 UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK"
+                                                                         style:UIAlertActionStyleDefault
+                                                                       handler:^(UIAlertAction * action) {}];
+
+                 [errView addAction:defaultAction];
+                 [self presentViewController:errView animated:YES completion:nil];
+}
+
+-(void)otpRequest:(NSString*)phone and:(NSString*)token{
+   
+    // NSString *strNumberWithCode = [NSString stringWithFormat:@"%@%@",countryCodeField.text,phone.text ];
+    // NSString *strNumberWithCode = [NSString stringWithFormat:@"%@",phone.text ];
+
+     _titleLabel.text = @"Verify";
+     _activationTitle.text = @"Verify Account";
+     _waitView.hidden = NO;
+     _txtFldOTP.text = @"";
+     
+     NSString *urlString = [NSString stringWithFormat:@"%@OTPSMSRequest?deviceUID=%@&phoneNumber=%@",
+                            BASE_URL,token,phone];
+
+
+     NSMutableURLRequest *request = [NSMutableURLRequest new];
+     request.HTTPMethod = @"GET";
+     [request setURL:[NSURL URLWithString:urlString]];
+     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    // [request setHTTPBody:jsonBodyData];
+
+     NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+     NSURLSession *session = [NSURLSession sessionWithConfiguration:config
+                                                           delegate:nil
+                                                      delegateQueue:[NSOperationQueue mainQueue]];
+     NSURLSessionDataTask *task = [session dataTaskWithRequest:request
+                                             completionHandler:^(NSData * _Nullable data,
+                                                                 NSURLResponse * _Nullable response,
+                                                                 NSError * _Nullable error) {
+
+     NSHTTPURLResponse *asHTTPResponse = (NSHTTPURLResponse *) response;
+     NSDictionary *forJSONObject = [NSJSONSerialization JSONObjectWithData:data
+                                                                                     options:kNilOptions
+                                                                                       error:nil];
+
+           if (asHTTPResponse.statusCode == 200){
+
+               //otp = [forJSONObject objectForKey:@"token"];
+               
+                _waitView.hidden = YES;
+               
+               _activationSMSText.text = [NSString stringWithFormat:NSLocalizedString(@"A code was sent to  %@ It should arrive shortly ", nil), phone];
+               [self changeView:_createAccountActivateSMSView back:FALSE animation:TRUE];
+               // [self signInUsing:@"tt" andPassword:@"tt"];
+
+
+           }else{
+               
+               _waitView.hidden = YES;
+               if (asHTTPResponse.statusCode == 1980){
+                   
+                   [self showAlert:@"Invalid Number"];
+               }else if (asHTTPResponse.statusCode == 2003){
+                   
+                   [self showAlert:@"Client not reconized"];
+               }
+               else if (asHTTPResponse.statusCode == 400){
+                   
+                   [self showAlert:@"Temperary unavailable / try again in few seconds"];
+               }
+           }
+         
+     }];
+     [task resume];
+
+   }
+
+
+-(void)getSipCredentials:(NSString*)otp andPassword:(NSString*)token{
+    
+        
+        _waitView.hidden = NO;
+       // NSString *strNumberWithCode = [NSString stringWithFormat:@"%@%@",strCode,strPhone];
+        NSString *urlString = [NSString stringWithFormat:@"%@OTPSMSResponse",
+                               BASE_URL];
+        NSDictionary *jsonBodyDict = @{@"deviceUID":token, @"OTPcode":otp};
+        
+        NSData *jsonBodyData = [NSJSONSerialization dataWithJSONObject:jsonBodyDict options:kNilOptions error:nil];
+        
+        NSMutableURLRequest *request = [NSMutableURLRequest new];
+        request.HTTPMethod = @"POST";
+        
+        
+        [request setURL:[NSURL URLWithString:urlString]];
+        [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+        [request setHTTPBody:jsonBodyData];
+        
+        NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+        NSURLSession *session = [NSURLSession sessionWithConfiguration:config
+                                                              delegate:nil
+                                                         delegateQueue:[NSOperationQueue mainQueue]];
+        NSURLSessionDataTask *task = [session dataTaskWithRequest:request
+                                                completionHandler:^(NSData * _Nullable data,
+                                                                    NSURLResponse * _Nullable response,
+                                                                    NSError * _Nullable error) {
+           
+            
+            NSHTTPURLResponse *asHTTPResponse = (NSHTTPURLResponse *) response;
+            _waitView.hidden = YES;
+            NSDictionary *forJSONObject = [NSJSONSerialization JSONObjectWithData:data
+                                                                                       options:kNilOptions
+                                                                                         error:nil];
+            
+            if (asHTTPResponse.statusCode == 200){
+                
+        
+               [NSUserDefaults.standardUserDefaults setObject:[forJSONObject objectForKey:@"token"] forKey:@"KToken"];
+               
+              // [self getBalance:[forJSONObject objectForKey:@"token"]];
+                
+                
+                [LinphoneUtils  getBalance:[forJSONObject objectForKey:@"token"]];
+                
+            }else{
+                
+                NSString *errorMsg = [forJSONObject objectForKey:@"status"];
+                UIAlertController *errView = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"SplashCall", nil)
+                                                                                 message:NSLocalizedString(errorMsg, nil)
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+                
+                UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK"
+                                                                        style:UIAlertActionStyleDefault
+                                                                      handler:^(UIAlertAction * action) {}];
+                
+                [errView addAction:defaultAction];
+                [self presentViewController:errView animated:YES completion:nil];
+                
+            }
+        
+        }];
+        [task resume];
+    
+}
+
+-(NSString *)getRandomPINString:(NSInteger)length
+{
+    NSMutableString *returnString = [NSMutableString stringWithCapacity:length];
+
+    NSString *numbers = @"0123456789";
+
+    // First number cannot be 0
+    [returnString appendFormat:@"%C", [numbers characterAtIndex:(arc4random() % ([numbers length]-1))+1]];
+
+    for (int i = 1; i < length; i++)
+    {
+        [returnString appendFormat:@"%C", [numbers characterAtIndex:arc4random() % [numbers length]]];
+    }
+
+    return returnString;
 }
 
 - (IBAction)onCreateAccountActivationClick:(id)sender {
-    ONCLICKBUTTON(sender, 100, {
+  
+    
+    /* ONCLICKBUTTON(sender, 100, {
         _waitView.hidden = NO;
 		linphone_account_creator_set_activation_code(
 			account_creator,
@@ -1330,14 +1793,264 @@ void assistant_is_account_linked(LinphoneAccountCreator *creator, LinphoneAccoun
 			linphone_account_creator_link_account(account_creator);
 			linphone_account_creator_activate_alias(account_creator);
 		}
-    });
+    });*/
+    if ([_txtFldOTP.text isEqualToString:@""]){
+        
+        UIAlertController *errView = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"SplashCall", nil)
+                                                                         message:NSLocalizedString(@"Please enter otp.", nil)
+                                                                  preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK"
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction * action) {}];
+        
+        [errView addAction:defaultAction];
+        [self presentViewController:errView animated:YES completion:nil];
+    }else{
+        
+        otp = _txtFldOTP.text;
+        
+        _waitView.hidden = NO;
+        
+        
+        
+        NSString *urlString = [NSString stringWithFormat:@"%@OTPSMSResponse?deviceUID=%@&OTPcode=%@",
+                               BASE_URL,@"yyuyjjjjjjkkklljhhjjhhjjnkkllllllll",otp];
+        
+
+//urlString = [urlString stringByReplacingOccurrencesOfString:@"+"
+       // withString:@""];
+        
+        NSMutableURLRequest *request = [NSMutableURLRequest new];
+        request.HTTPMethod = @"POST";
+        
+        
+        [request setURL:[NSURL URLWithString:urlString]];
+        [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+        
+        NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+        NSURLSession *session = [NSURLSession sessionWithConfiguration:config
+                                                              delegate:nil
+                                                         delegateQueue:[NSOperationQueue mainQueue]];
+        NSURLSessionDataTask *task = [session dataTaskWithRequest:request
+                                                completionHandler:^(NSData * _Nullable data,
+                                                                    NSURLResponse * _Nullable response,
+                                                                    NSError * _Nullable error) {
+           
+            
+            NSHTTPURLResponse *asHTTPResponse = (NSHTTPURLResponse *) response;
+            _waitView.hidden = YES;
+            NSDictionary *forJSONObject = [NSJSONSerialization JSONObjectWithData:data
+                                                                                       options:kNilOptions
+                                                                                         error:nil];
+            
+            if (asHTTPResponse.statusCode == 200){
+                
+               // [self getToken:[forJSONObject objectForKey:@"username"] andPassword:[forJSONObject objectForKey:@"password"]];
+              //  [self signInUsing:[forJSONObject objectForKey:@"username"] andPassword:[forJSONObject objectForKey:@"password"]];
+                
+               // [self signInUsing: [[forJSONObject objectForKey:@"sipSettings"] objectForKey:@"sipExtension"] andPassword: [[forJSONObject objectForKey:@"sipSettings"] objectForKey:@"secret"] serverIp:[[forJSONObject objectForKey:@"sipSettings"] objectForKey:@"sipServerIP"]];
+                [self login:strPhone];
+                
+                
+            }else{
+                
+                NSString *errorMsg = [forJSONObject objectForKey:@"status"];
+                UIAlertController *errView = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"SplashCall", nil)
+                                                                                 message:NSLocalizedString(errorMsg, nil)
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+                
+                UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK"
+                                                                        style:UIAlertActionStyleDefault
+                                                                      handler:^(UIAlertAction * action) {}];
+                
+                [errView addAction:defaultAction];
+                [self presentViewController:errView animated:YES completion:nil];
+                
+            }
+            
+            
+            
+        }];
+        [task resume];
+    }
+           
 }
 
+
+/*
+-(void)getBalance:(NSString*)strToken{
+    
+        
+       
+       // NSString *strNumberWithCode = [NSString stringWithFormat:@"+%@%@",strCode,strPhone];
+        NSString *urlString = [NSString stringWithFormat:@"%@balance",
+                               BASE_URL];
+       // NSDictionary *jsonBodyDict = @{@"phone_number":strNumberWithCode, @"code":_txtFldOTP.text};
+        
+       // NSData *jsonBodyData = [NSJSONSerialization dataWithJSONObject:jsonBodyDict options:kNilOptions error:nil];
+        
+        NSMutableURLRequest *request = [NSMutableURLRequest new];
+        request.HTTPMethod = @"GET";
+        
+        
+        [request setURL:[NSURL URLWithString:urlString]];
+        [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+        [request addValue:strToken forHTTPHeaderField:@"Authorization"];
+
+      //  [request setHTTPBody:jsonBodyData];
+        
+        NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+        NSURLSession *session = [NSURLSession sessionWithConfiguration:config
+                                                              delegate:nil
+                                                         delegateQueue:[NSOperationQueue mainQueue]];
+        NSURLSessionDataTask *task = [session dataTaskWithRequest:request
+                                                completionHandler:^(NSData * _Nullable data,
+                                                                    NSURLResponse * _Nullable response,
+                                                                    NSError * _Nullable error) {
+           
+            
+            NSHTTPURLResponse *asHTTPResponse = (NSHTTPURLResponse *) response;
+            _waitView.hidden = YES;
+            NSDictionary *forJSONObject = [NSJSONSerialization JSONObjectWithData:data
+                                                                                       options:kNilOptions
+                                                                                         error:nil];
+            
+            if (asHTTPResponse.statusCode == 200){
+                
+        
+              //  [self getBalance];
+             
+                
+                
+            }else{
+                
+                NSString *errorMsg = [forJSONObject objectForKey:@"status"];
+                UIAlertController *errView = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"SplashCall", nil)
+                                                                                 message:NSLocalizedString(errorMsg, nil)
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+                
+                UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK"
+                                                                        style:UIAlertActionStyleDefault
+                                                                      handler:^(UIAlertAction * action) {}];
+                
+                [errView addAction:defaultAction];
+                [self presentViewController:errView animated:YES completion:nil];
+                
+            }
+            
+            
+            
+        }];
+        [task resume];
+    
+}*/
+
+-(void)signInUsing:(NSString*)userName andPassword:(NSString*)password serverIp:(NSString*)ip{
+    
+    
+     // NSString *domain = @"jirtumobile.jirtutech.com";
+         // _txtFldPassword.text = @"56049syc50wmrxw79964";*/
+    
+    //NSString *domain = [self findTextField:ViewElement_Domain].text;
+    NSString *domain = ip;//@"labs.voipregistration.xyz";
+    //_txtFldPassword.text =
+  //  password = @"Tes@1234";
+  //  userName  = @"5555";
+    
+    NSString *str = [NSString stringWithFormat:@"%@",userName];
+
+    NSString *username = str;
+    NSString *pwd = password;
+    
+    //    NSString *displayName = [self findTextField:ViewElement_DisplayName].text;
+    NSString *displayName = @"";
+    
+    LinphoneProxyConfig *config = linphone_core_create_proxy_config(LC);
+    LinphoneAddress *addr = linphone_address_new(NULL);
+    LinphoneAddress *tmpAddr = linphone_address_new([NSString stringWithFormat:@"sip:%@",domain].UTF8String);
+    if (tmpAddr == nil) {
+        [self displayAssistantConfigurationError];
+        return;
+    }
+    
+    linphone_address_set_username(addr, username.UTF8String);
+    linphone_address_set_port(addr, linphone_address_get_port(tmpAddr));
+    linphone_address_set_domain(addr, linphone_address_get_domain(tmpAddr));
+    if (displayName && ![displayName isEqualToString:@""]) {
+        linphone_address_set_display_name(addr, displayName.UTF8String);
+    }
+    linphone_proxy_config_set_identity_address(config, addr);
+    // set transport
+  /*  UISegmentedControl *transports = (UISegmentedControl *)[self findView:ViewElement_Transport
+                                                                   inView:self.contentView
+                                                                   ofType:UISegmentedControl.class];
+    if (transports) {
+        NSString *type = [transports titleForSegmentAtIndex:[transports selectedSegmentIndex]];
+        linphone_proxy_config_set_route(
+            config,
+            [NSString stringWithFormat:@"%s;transport=%s", domain.UTF8String, type.lowercaseString.UTF8String]
+                .UTF8String);
+        linphone_proxy_config_set_server_addr(
+            config,
+            [NSString stringWithFormat:@"%s;transport=%s", domain.UTF8String, type.lowercaseString.UTF8String]
+                .UTF8String);
+    }*/
+    NSString *type = @"TCP";
+    linphone_proxy_config_set_route(
+               config,
+               [NSString stringWithFormat:@"%s;transport=%s", domain.UTF8String, type.lowercaseString.UTF8String]
+                   .UTF8String);
+           linphone_proxy_config_set_server_addr(
+               config,
+               [NSString stringWithFormat:@"%s;transport=%s", domain.UTF8String, type.lowercaseString.UTF8String]
+                   .UTF8String);
+
+    linphone_proxy_config_enable_publish(config, FALSE);
+    linphone_proxy_config_enable_register(config, TRUE);
+
+    LinphoneAuthInfo *info =
+        linphone_auth_info_new(linphone_address_get_username(addr), // username
+                               NULL,                                // user id
+                               pwd.UTF8String,                        // passwd
+                               NULL,                                // ha1
+                               linphone_address_get_domain(addr),   // realm - assumed to be domain
+                               linphone_address_get_domain(addr)    // domain
+                               );
+    linphone_core_add_auth_info(LC, info);
+    linphone_address_unref(addr);
+    linphone_address_unref(tmpAddr);
+
+    if (config) {
+        [[LinphoneManager instance] configurePushTokenForProxyConfig:config];
+        if (linphone_core_add_proxy_config(LC, config) != -1) {
+            linphone_core_set_default_proxy_config(LC, config);
+            // reload address book to prepend proxy config domain to contacts' phone number
+            // todo: STOP doing that!
+            [[LinphoneManager.instance fastAddressBook] fetchContactsInBackGroundThread];
+            [PhoneMainView.instance changeCurrentView:DialerView.compositeViewDescription];
+            
+            
+        } else {
+          [self displayAssistantConfigurationError];
+        }
+    } else {
+      [self displayAssistantConfigurationError];
+    }
+}
 - (IBAction)onCreateAccountCheckActivatedClick:(id)sender {
-	ONCLICKBUTTON(sender, 100, {
+	/*ONCLICKBUTTON(sender, 100, {
         _waitView.hidden = NO;
 		linphone_account_creator_is_account_activated(account_creator);
-    });
+    });*/
+    
+   /* {
+        "phone_number": "+13133555564",
+        "code": "949438"
+    }*/
+    //
 }
 
 - (IBAction)onLinkAccountClick:(id)sender {
@@ -1373,75 +2086,120 @@ void assistant_is_account_linked(LinphoneAccountCreator *creator, LinphoneAccoun
 	});
 }
 
+
 - (IBAction)onLoginClick:(id)sender {
-	ONCLICKBUTTON(sender, 100, {
-		_waitView.hidden = NO;
-		NSString *domain = [self findTextField:ViewElement_Domain].text;
-		NSString *username = [self findTextField:ViewElement_Username].text;
-		NSString *displayName = [self findTextField:ViewElement_DisplayName].text;
-		NSString *pwd = [self findTextField:ViewElement_Password].text;
-		LinphoneProxyConfig *config = linphone_core_create_proxy_config(LC);
-		LinphoneAddress *addr = linphone_address_new(NULL);
-		LinphoneAddress *tmpAddr = linphone_address_new([NSString stringWithFormat:@"sip:%@",domain].UTF8String);
-		if (tmpAddr == nil) {
-			[self displayAssistantConfigurationError];
-			return;
-		}
+	
+    _txtFldUserName.text  = @"+917530965063";
+    //ONCLICKBUTTON(sender, 100, {
+		_waitView.hidden = YES;
+		//NSString *domain = [self findTextField:ViewElement_Domain].text;
+        // NSString *domain = @"jirtumobile.jirtutech.com";
+         NSString *domain = @"172.83.90.120";
+        _txtFldPassword.text = @"LyxrQh8b3E";
+		//NSString *username = [self findTextField:ViewElement_Username].text;
+         NSString *username = @"+917530965063";
+         NSString *pwd = _txtFldPassword.text;
+    
+	     //	NSString *displayName = [self findTextField:ViewElement_DisplayName].text;
+        NSString *displayName = @"+917530965063";
+//		//NSString *pwd = [self findTextField:ViewElement_Password].text;
+//        NSString *pwd =@"56049syc50wmrxw79964";
+    
+    
+       if ([_txtFldUserName.text isEqualToString:@""]){
+          
+           UIAlertController *errView = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"SplashCall", nil)
+                                                                            message:NSLocalizedString(@"Please enter user name.", nil)
+                                                                     preferredStyle:UIAlertControllerStyleAlert];
+               
+           UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK"
+                                                                   style:UIAlertActionStyleDefault
+                                                                 handler:^(UIAlertAction * action) {}];
+           
+           [errView addAction:defaultAction];
+           [self presentViewController:errView animated:YES completion:nil];
+       }else if ([_txtFldPassword.text isEqualToString:@""]){
+          
+           UIAlertController *errView = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"SplashCall", nil)
+                                                                            message:NSLocalizedString(@"Please enter password  .", nil)
+                                                                     preferredStyle:UIAlertControllerStyleAlert];
+               
+           UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK"
+                                                                   style:UIAlertActionStyleDefault
+                                                                 handler:^(UIAlertAction * action) {}];
+           
+           [errView addAction:defaultAction];
+           [self presentViewController:errView animated:YES completion:nil];
+       }else{
+           
+           
+           LinphoneProxyConfig *config = linphone_core_create_proxy_config(LC);
+           LinphoneAddress *addr = linphone_address_new(NULL);
+           LinphoneAddress *tmpAddr = linphone_address_new([NSString stringWithFormat:@"sip:%@",domain].UTF8String);
+           if (tmpAddr == nil) {
+               [self displayAssistantConfigurationError];
+               return;
+           }
+           
+           linphone_address_set_username(addr, username.UTF8String);
+           linphone_address_set_port(addr, linphone_address_get_port(tmpAddr));
+           linphone_address_set_domain(addr, linphone_address_get_domain(tmpAddr));
+           if (displayName && ![displayName isEqualToString:@""]) {
+               linphone_address_set_display_name(addr, displayName.UTF8String);
+           }
+           linphone_proxy_config_set_identity_address(config, addr);
+           // set transport
+           UISegmentedControl *transports = (UISegmentedControl *)[self findView:ViewElement_Transport
+                                                                          inView:self.contentView
+                                                                          ofType:UISegmentedControl.class];
+          // if (transports) {
+               NSString *type = @"UDP";
+              // NSString *type = [transports titleForSegmentAtIndex:[transports selectedSegmentIndex]];
+               linphone_proxy_config_set_route(
+                   config,
+                   [NSString stringWithFormat:@"%s;transport=%s", domain.UTF8String, type.lowercaseString.UTF8String]
+                       .UTF8String);
+               linphone_proxy_config_set_server_addr(
+                   config,
+                   [NSString stringWithFormat:@"%s;transport=%s", domain.UTF8String, type.lowercaseString.UTF8String]
+                       .UTF8String);
+          // }
+
+           linphone_proxy_config_enable_publish(config, FALSE);
+           linphone_proxy_config_enable_register(config, TRUE);
+
+           LinphoneAuthInfo *info =
+               linphone_auth_info_new(linphone_address_get_username(addr), // username
+                                      NULL,                                // user id
+                                      pwd.UTF8String,                        // passwd
+                                      NULL,                                // ha1
+                                      linphone_address_get_domain(addr),   // realm - assumed to be domain
+                                      linphone_address_get_domain(addr)    // domain
+                                      );
+           linphone_core_add_auth_info(LC, info);
+           linphone_address_unref(addr);
+           linphone_address_unref(tmpAddr);
+
+           if (config) {
+               [[LinphoneManager instance] configurePushTokenForProxyConfig:config];
+               if (linphone_core_add_proxy_config(LC, config) != -1) {
+                   linphone_core_set_default_proxy_config(LC, config);
+                   // reload address book to prepend proxy config domain to contacts' phone number
+                   // todo: STOP doing that!
+                   [[LinphoneManager.instance fastAddressBook] fetchContactsInBackGroundThread];
+                   [PhoneMainView.instance changeCurrentView:DialerView.compositeViewDescription];
+               } else {
+                 [self displayAssistantConfigurationError];
+               }
+           } else {
+             [self displayAssistantConfigurationError];
+           }
+       }
+    
 		
-		linphone_address_set_username(addr, username.UTF8String);
-		linphone_address_set_port(addr, linphone_address_get_port(tmpAddr));
-		linphone_address_set_domain(addr, linphone_address_get_domain(tmpAddr));
-		if (displayName && ![displayName isEqualToString:@""]) {
-			linphone_address_set_display_name(addr, displayName.UTF8String);
-		}
-		linphone_proxy_config_set_identity_address(config, addr);
-		// set transport
-		UISegmentedControl *transports = (UISegmentedControl *)[self findView:ViewElement_Transport
-																	   inView:self.contentView
-																	   ofType:UISegmentedControl.class];
-		if (transports) {
-			NSString *type = [transports titleForSegmentAtIndex:[transports selectedSegmentIndex]];
-			linphone_proxy_config_set_route(
-				config,
-				[NSString stringWithFormat:@"%s;transport=%s", domain.UTF8String, type.lowercaseString.UTF8String]
-					.UTF8String);
-			linphone_proxy_config_set_server_addr(
-				config,
-				[NSString stringWithFormat:@"%s;transport=%s", domain.UTF8String, type.lowercaseString.UTF8String]
-					.UTF8String);
-		}
-
-		linphone_proxy_config_enable_publish(config, FALSE);
-		linphone_proxy_config_enable_register(config, TRUE);
-
-		LinphoneAuthInfo *info =
-			linphone_auth_info_new(linphone_address_get_username(addr), // username
-								   NULL,								// user id
-								   pwd.UTF8String,						// passwd
-								   NULL,								// ha1
-								   linphone_address_get_domain(addr),   // realm - assumed to be domain
-								   linphone_address_get_domain(addr)	// domain
-								   );
-		linphone_core_add_auth_info(LC, info);
-		linphone_address_unref(addr);
-		linphone_address_unref(tmpAddr);
-
-		if (config) {
-			[[LinphoneManager instance] configurePushTokenForProxyConfig:config];
-			if (linphone_core_add_proxy_config(LC, config) != -1) {
-				linphone_core_set_default_proxy_config(LC, config);
-				// reload address book to prepend proxy config domain to contacts' phone number
-				// todo: STOP doing that!
-				[[LinphoneManager.instance fastAddressBook] fetchContactsInBackGroundThread];
-                [PhoneMainView.instance changeCurrentView:DialerView.compositeViewDescription];
-			} else {
-			  [self displayAssistantConfigurationError];
-			}
-		} else {
-		  [self displayAssistantConfigurationError];
-		}
-	});
+	//});
 }
+
 
 - (IBAction)onRemoteProvisioningLoginClick:(id)sender {
 	ONCLICKBUTTON(sender, 100, {
@@ -1527,7 +2285,7 @@ void assistant_is_account_linked(LinphoneAccountCreator *creator, LinphoneAccoun
 	}
 
 	if (uri) {
-		_accountLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Your SIP address will be sip:%s@sip.linphone.org", nil), uri];
+		_accountLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Your SIP address will be sip:%s@localsplash.com", nil), uri];
 	} else if (!username.superview.hidden) {
 		_accountLabel.text = NSLocalizedString(@"Please enter your username", nil);
 	} else {
@@ -1547,8 +2305,8 @@ void assistant_is_account_linked(LinphoneAccountCreator *creator, LinphoneAccoun
 	[self findTextField:ViewElement_Phone].hidden = emailSwitch.isOn;
 	[self findTextField:ViewElement_PhoneCC].hidden = emailSwitch.isOn;
 	[self findButton:ViewElement_PhoneButton].hidden = emailSwitch.isOn;
-	self.phoneLabel.hidden = emailSwitch.isOn;
-	self.phoneTitle.hidden = emailSwitch.isOn;
+	self.phoneLabel.hidden = emailSwitch.offImage;
+	self.phoneTitle.hidden = emailSwitch.offImage;
 	self.phoneTitle.text = NSLocalizedString(@"Please confirm your country code and enter your phone number", nil);
 	self.infoLoginButton.hidden = !usernameView.hidden;
 	if (!usernameView.hidden) {
@@ -1600,15 +2358,21 @@ void assistant_is_account_linked(LinphoneAccountCreator *creator, LinphoneAccoun
 		UIRoundBorderedButton *phoneButton = [self findButton:ViewElement_PhoneButton];
 		[phoneButton setTitle:c ? [c objectForKey:@"name"] : NSLocalizedString(@"Unknown country code", nil)
 					 forState:UIControlStateNormal];
+        
 	}
+    [self findCountryCode:countryCodeField.text];
 }
 
 - (IBAction)onCountryCodeFieldChange:(id)sender {
 	[self updateCountry:NO];
+    UIAssistantTextField *countryCodeField = [self findTextField:ViewElement_PhoneCC];
+    [self findCountryCode:countryCodeField.text];
 }
 
 - (IBAction)onCountryCodeFieldEnd:(id)sender {
 	[self updateCountry:YES];
+    UIAssistantTextField *countryCodeField = [self findTextField:ViewElement_PhoneCC];
+    [self findCountryCode:countryCodeField.text];
 }
 
 - (IBAction)onPhoneNumberDisclosureClick:(id)sender {
@@ -1636,7 +2400,10 @@ void assistant_is_account_linked(LinphoneAccountCreator *creator, LinphoneAccoun
 		} else if (currentView == _welcomeView) {
 			[PhoneMainView.instance popCurrentView];
 		} else {
-			[self changeView:_welcomeView back:TRUE animation:TRUE];
+			//[self changeView:_welcomeView back:TRUE animation:TRUE];
+            _titleLabel.text = @"Welcome";
+            [_backButton setHidden:true];
+            [self changeView:_loginView back:TRUE animation:TRUE];
 		}
 	} else {
 		[self onDialerClick:nil];
@@ -1683,6 +2450,22 @@ void assistant_is_account_linked(LinphoneAccountCreator *creator, LinphoneAccoun
 			}
 		}
 	});
+}
+
+
+-(NSString*)findCountryCode:(NSString*)cCode
+{
+    for (NSDictionary *name in countryName)
+    {
+        NSString *FindName = [NSString stringWithFormat:@"+%@",[name objectForKey:@"ISD"]];
+        if ([FindName isEqualToString:cCode])
+        {
+            NSString *code =[name objectForKey:@"ISD"];
+            _countryImg.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@2.png",[name objectForKey:@"name"]]];
+            return [name objectForKey:@"name"];
+        }
+    }
+    return @"";
 }
 
 @end

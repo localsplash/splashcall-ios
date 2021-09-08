@@ -134,7 +134,7 @@
 		</dict>
 		<dict>
 			<key>DefaultValue</key>
-			<false/>
+			<true/>
 			<key>Key</key>
 			<string>g722_preference</string>
 			<key>Title</key>

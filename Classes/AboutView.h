@@ -29,6 +29,8 @@
 @property(weak, nonatomic) IBOutlet UILabel *libVersionLabel;
 @property(weak, nonatomic) IBOutlet UILabel *licenceLabel;
 @property(weak, nonatomic) IBOutlet UILabel *policyLabel;
+@property(weak, nonatomic) IBOutlet UIWebView *webVw;
+
 - (IBAction)onLinkTap:(id)sender;
 - (IBAction)onLicenceTap;
 - (IBAction)onPolicyTap;

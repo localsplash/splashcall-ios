@@ -24,9 +24,9 @@
 @implementation UIRoundBorderedButton
 
 - (id)initBorders {
-	self.layer.borderWidth = .8;
+	self.layer.borderWidth = 0;
 	self.layer.borderColor = [self.titleLabel.textColor CGColor];
-	self.layer.cornerRadius = 4.f;
+	self.layer.cornerRadius = 0.f;
 	self.layer.masksToBounds = YES;
 
 	// capitalize title (should be already done though)
