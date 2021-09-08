@@ -147,3 +147,4 @@ Any Linphone view is actually presented in the UICompositeView, with or without 
 The UICompositeView consists of 3 areas laid out vertically. From top to bottom: StatusBar, Content and TabBar.
 The TabBar is usually the UIMainBar, which is used as a navigation controller: clicking on each of the buttons will trigger
 a transition to another "view".
+# splashcall-ios
