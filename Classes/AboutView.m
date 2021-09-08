@@ -20,7 +20,7 @@
 #import "PhoneMainView.h"
 #import "LinphoneManager.h"
 #import "LinphoneIOSVersion.h"
-
+///
 @implementation AboutView
 
 #pragma mark - UICompositeViewDelegate Functions
